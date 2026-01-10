@@ -16,19 +16,19 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variantStyles: Record<ButtonVariant, string> = {
   primary:
-    "bg-neo-accent text-black border-4 border-black shadow-neo-md hover:bg-red-400",
+    "gradient-primary text-white shadow-clayButton hover:shadow-clayButtonHover",
   secondary:
-    "bg-neo-secondary text-black border-4 border-black shadow-neo-md hover:bg-yellow-300",
+    "bg-white text-clay-foreground shadow-clayButton hover:shadow-clayButtonHover",
   outline:
-    "bg-white text-black border-4 border-black shadow-neo-md hover:bg-neo-background",
+    "border-2 border-clay-accent/20 bg-transparent text-clay-accent hover:border-clay-accent hover:bg-clay-accent/5",
   ghost:
-    "bg-transparent text-black border-2 border-transparent hover:border-black hover:bg-neo-accent hover:shadow-neo-sm",
+    "text-clay-foreground hover:bg-clay-accent/10 hover:text-clay-accent",
 };
 
 const sizeStyles: Record<ButtonSize, string> = {
-  sm: "h-10 px-4 text-sm",
-  md: "h-12 px-6 text-base",
-  lg: "h-14 px-8 text-lg",
+  sm: "h-11 px-5 text-sm",
+  md: "h-14 px-7 text-base",
+  lg: "h-16 px-9 text-lg",
 };
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -52,15 +52,17 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         disabled={disabled}
         className={`
           inline-flex items-center justify-center gap-2
-          font-bold uppercase tracking-wide
-          transition-all duration-100 ease-out
-          btn-push
+          font-bold tracking-wide
+          rounded-[20px]
+          btn-squish
+          focus-visible:ring-4 focus-visible:ring-clay-accent/30 focus-visible:ring-offset-2 focus-visible:outline-none
           disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none
           ${variantStyles[variant]}
           ${sizeStyles[size]}
           ${fullWidth ? "w-full" : ""}
           ${className}
         `}
+        style={{ fontFamily: "var(--font-heading)" }}
         {...props}
       >
         {leftIcon && <span className="flex-shrink-0">{leftIcon}</span>}

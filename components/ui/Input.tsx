@@ -16,7 +16,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         {label && (
           <label
             htmlFor={inputId}
-            className="font-black text-sm uppercase tracking-widest"
+            className="font-bold text-sm text-clay-foreground"
+            style={{ fontFamily: "var(--font-heading)" }}
           >
             {label}
           </label>
@@ -25,23 +26,24 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           ref={ref}
           id={inputId}
           className={`
-            h-14 px-4
-            bg-white
-            border-4 border-black
-            font-bold text-lg
-            placeholder:text-black/40
-            focus-visible:bg-neo-secondary
-            focus-visible:shadow-neo-sm
-            focus-visible:outline-none
-            focus-visible:ring-0
-            transition-all duration-100
-            ${error ? "border-neo-accent bg-red-50" : ""}
+            h-16 px-6 py-4
+            bg-[#EFEBF5]
+            border-0
+            rounded-2xl
+            font-medium text-lg text-clay-foreground
+            shadow-clayPressed
+            placeholder:text-clay-muted
+            focus:bg-white
+            focus:ring-4 focus:ring-clay-accent/20
+            focus:outline-none
+            transition-all duration-200
+            ${error ? "ring-2 ring-red-400" : ""}
             ${className}
           `}
           {...props}
         />
         {error && (
-          <span className="text-neo-accent font-bold text-sm uppercase tracking-wide">
+          <span className="text-red-500 font-medium text-sm">
             {error}
           </span>
         )}

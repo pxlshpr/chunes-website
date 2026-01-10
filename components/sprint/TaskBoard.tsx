@@ -7,7 +7,6 @@ import {
   AlertTriangle,
   Pause,
   Circle,
-  ExternalLink,
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
@@ -23,48 +22,48 @@ function getStatusConfig(status: string) {
   if (s.includes("done") || s.includes("completed")) {
     return {
       icon: CheckCircle2,
-      color: "bg-green-400",
-      borderColor: "border-green-500",
+      gradient: "from-emerald-400 to-emerald-600",
       label: "Done",
+      textColor: "text-clay-success",
     };
   }
   if (s.includes("running") || s.includes("in progress")) {
     return {
       icon: Play,
-      color: "bg-neo-accent",
-      borderColor: "border-neo-accent",
+      gradient: "from-purple-400 to-purple-600",
       label: "Running",
+      textColor: "text-clay-accent",
     };
   }
   if (s.includes("testing")) {
     return {
       icon: AlertTriangle,
-      color: "bg-orange-400",
-      borderColor: "border-orange-400",
+      gradient: "from-amber-400 to-amber-600",
       label: "Testing",
+      textColor: "text-clay-warning",
     };
   }
   if (s.includes("ready") || s.includes("queue")) {
     return {
       icon: Clock,
-      color: "bg-neo-secondary",
-      borderColor: "border-neo-secondary",
+      gradient: "from-blue-400 to-blue-600",
       label: "Ready",
+      textColor: "text-clay-sky",
     };
   }
   if (s.includes("blocked") || s.includes("paused")) {
     return {
       icon: Pause,
-      color: "bg-neo-muted",
-      borderColor: "border-neo-muted",
+      gradient: "from-gray-400 to-gray-500",
       label: "Blocked",
+      textColor: "text-clay-muted",
     };
   }
   return {
     icon: Circle,
-    color: "bg-gray-300",
-    borderColor: "border-gray-300",
+    gradient: "from-gray-300 to-gray-400",
     label: status,
+    textColor: "text-clay-muted",
   };
 }
 
@@ -72,18 +71,18 @@ function getPriorityConfig(priority: string) {
   const p = priority.toLowerCase();
 
   if (p.includes("urgent")) {
-    return { color: "bg-red-500 text-white", label: "Urgent" };
+    return { gradient: "from-red-400 to-red-600", label: "Urgent", variant: "accent" as const };
   }
   if (p.includes("high")) {
-    return { color: "bg-orange-400", label: "High" };
+    return { gradient: "from-orange-400 to-orange-600", label: "High", variant: "warning" as const };
   }
   if (p.includes("medium")) {
-    return { color: "bg-neo-secondary", label: "Medium" };
+    return { gradient: "from-blue-400 to-blue-600", label: "Medium", variant: "default" as const };
   }
   if (p.includes("low")) {
-    return { color: "bg-neo-muted", label: "Low" };
+    return { gradient: "from-gray-400 to-gray-500", label: "Low", variant: "muted" as const };
   }
-  return { color: "bg-gray-200", label: priority };
+  return { gradient: "from-gray-300 to-gray-400", label: priority, variant: "muted" as const };
 }
 
 export function TaskBoard({ tasks }: TaskBoardProps) {
@@ -99,10 +98,8 @@ export function TaskBoard({ tasks }: TaskBoardProps) {
       medium: 2,
       low: 3,
     };
-    const aPriority =
-      priorityOrder[a.priority.toLowerCase()] ?? 4;
-    const bPriority =
-      priorityOrder[b.priority.toLowerCase()] ?? 4;
+    const aPriority = priorityOrder[a.priority.toLowerCase()] ?? 4;
+    const bPriority = priorityOrder[b.priority.toLowerCase()] ?? 4;
     return aPriority - bPriority;
   });
 
@@ -120,22 +117,24 @@ export function TaskBoard({ tasks }: TaskBoardProps) {
         {Object.entries(statusCounts).map(([status, count]) => {
           const config = getStatusConfig(status);
           return (
-            <Badge
+            <div
               key={status}
-              variant="default"
-              size="md"
-              className={config.color}
+              className="glass rounded-full px-4 py-2 shadow-clayCard flex items-center gap-2"
             >
-              <config.icon className="w-4 h-4 mr-1" />
-              {count} {status}
-            </Badge>
+              <div className={`w-6 h-6 rounded-full bg-gradient-to-br ${config.gradient} flex items-center justify-center`}>
+                <config.icon className="w-3 h-3 text-white" />
+              </div>
+              <span className="font-bold text-sm text-clay-foreground">
+                {count} {status}
+              </span>
+            </div>
           );
         })}
       </div>
 
       {/* Task Grid */}
       <div className="grid gap-4">
-        {sortedTasks.map((task, index) => {
+        {sortedTasks.map((task) => {
           const statusConfig = getStatusConfig(task.status);
           const priorityConfig = getPriorityConfig(task.priority);
           const StatusIcon = statusConfig.icon;
@@ -145,39 +144,38 @@ export function TaskBoard({ tasks }: TaskBoardProps) {
           return (
             <Card
               key={task.id}
+              variant="glass"
               hoverable
-              rotation={index % 3 === 0 ? 0.5 : index % 3 === 1 ? -0.3 : 0}
               className={`
-                ${isRunning ? `border-l-8 ${statusConfig.borderColor}` : ""}
+                ${isRunning ? "ring-2 ring-clay-accent/50" : ""}
                 ${isDone ? "opacity-70" : ""}
-                transition-all duration-200
               `}
             >
-              <CardContent className="p-6">
-                <div className="flex items-start justify-between gap-4">
+              <CardContent className="p-5 sm:p-6">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   {/* Left Content */}
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex flex-wrap items-center gap-2 mb-2">
                       {/* Task ID */}
-                      <code className="font-bold text-sm bg-black text-white px-2 py-1">
+                      <code
+                        className="font-bold text-xs px-2 py-1 rounded-lg bg-gradient-to-br from-purple-400 to-purple-600 text-white"
+                        style={{ fontFamily: "var(--font-body)" }}
+                      >
                         {task.id}
                       </code>
 
                       {/* Priority Badge */}
-                      <Badge
-                        variant="default"
-                        size="sm"
-                        className={priorityConfig.color}
-                      >
+                      <Badge variant={priorityConfig.variant} size="sm">
                         {priorityConfig.label}
                       </Badge>
                     </div>
 
                     {/* Title */}
                     <h3
-                      className={`font-black text-xl uppercase tracking-tight ${
+                      className={`font-extrabold text-lg sm:text-xl text-clay-foreground ${
                         isDone ? "line-through opacity-60" : ""
                       }`}
+                      style={{ fontFamily: "var(--font-heading)" }}
                     >
                       {task.title}
                     </h3>
@@ -185,10 +183,13 @@ export function TaskBoard({ tasks }: TaskBoardProps) {
 
                   {/* Status */}
                   <div
-                    className={`flex items-center gap-2 px-4 py-2 border-4 border-black shadow-neo-sm ${statusConfig.color}`}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-[16px] bg-gradient-to-br ${statusConfig.gradient} shadow-clayButton`}
                   >
-                    <StatusIcon className="w-5 h-5" />
-                    <span className="font-bold text-sm uppercase tracking-wide">
+                    <StatusIcon className="w-4 h-4 text-white" />
+                    <span
+                      className="font-bold text-sm text-white"
+                      style={{ fontFamily: "var(--font-heading)" }}
+                    >
                       {statusConfig.label}
                     </span>
                   </div>
@@ -196,7 +197,7 @@ export function TaskBoard({ tasks }: TaskBoardProps) {
 
                 {/* Running indicator */}
                 {isRunning && (
-                  <div className="mt-4 h-1 bg-neo-accent animate-pulse rounded-none" />
+                  <div className="mt-4 h-1 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 animate-pulse" />
                 )}
               </CardContent>
             </Card>

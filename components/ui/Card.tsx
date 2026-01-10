@@ -4,14 +4,13 @@ import { type ReactNode, type HTMLAttributes } from "react";
 
 interface CardProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
-  variant?: "default" | "accent" | "secondary" | "muted";
+  variant?: "default" | "glass" | "solid";
   hoverable?: boolean;
-  rotation?: number;
 }
 
 interface CardHeaderProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
-  variant?: "default" | "accent" | "secondary" | "muted";
+  gradient?: boolean;
 }
 
 interface CardContentProps extends HTMLAttributes<HTMLDivElement> {
@@ -19,41 +18,29 @@ interface CardContentProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 const cardVariants = {
-  default: "bg-white",
-  accent: "bg-neo-accent",
-  secondary: "bg-neo-secondary",
-  muted: "bg-neo-muted",
-};
-
-const headerVariants = {
-  default: "bg-neo-background",
-  accent: "bg-neo-accent",
-  secondary: "bg-neo-secondary",
-  muted: "bg-neo-muted",
+  default: "bg-white/70 backdrop-blur-xl",
+  glass: "glass",
+  solid: "bg-white",
 };
 
 export function Card({
   children,
   variant = "default",
   hoverable = false,
-  rotation = 0,
   className = "",
   ...props
 }: CardProps) {
-  const rotationClass =
-    rotation > 0 ? `rotate-${rotation}` : rotation < 0 ? `-rotate-${Math.abs(rotation)}` : "";
-
   return (
     <div
       className={`
+        relative overflow-hidden
+        rounded-[32px]
+        text-clay-foreground
+        shadow-clayCard
         ${cardVariants[variant]}
-        border-4 border-black
-        shadow-neo-md
-        ${hoverable ? "card-lift cursor-pointer" : ""}
-        ${rotationClass}
+        ${hoverable ? "card-lift cursor-pointer hover:shadow-clayCardHover" : ""}
         ${className}
       `}
-      style={rotation !== 0 ? { transform: `rotate(${rotation}deg)` } : undefined}
       {...props}
     >
       {children}
@@ -63,16 +50,15 @@ export function Card({
 
 export function CardHeader({
   children,
-  variant = "default",
+  gradient = false,
   className = "",
   ...props
 }: CardHeaderProps) {
   return (
     <div
       className={`
-        ${headerVariants[variant]}
-        border-b-4 border-black
-        px-6 py-4
+        px-8 py-6
+        ${gradient ? "gradient-primary text-white" : "border-b border-clay-accent/10"}
         ${className}
       `}
       {...props}
@@ -84,7 +70,7 @@ export function CardHeader({
 
 export function CardContent({ children, className = "", ...props }: CardContentProps) {
   return (
-    <div className={`px-6 py-6 ${className}`} {...props}>
+    <div className={`px-8 py-8 ${className}`} {...props}>
       {children}
     </div>
   );

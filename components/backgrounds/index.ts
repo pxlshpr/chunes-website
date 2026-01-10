@@ -1,1 +1,1 @@
-export { NeoBackground } from "./NeoBackground";
+export { ClayBackground } from "./ClayBackground";
