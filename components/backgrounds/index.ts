@@ -1,0 +1,1 @@
+export { NeoBackground } from "./NeoBackground";

@@ -1,0 +1,241 @@
+@import "tailwindcss";
+
+/* ============================================
+   NEO-BRUTALISM DESIGN TOKENS
+   ============================================ */
+
+@theme {
+  /* Colors */
+  --color-neo-background: #FFFDF5;
+  --color-neo-foreground: #000000;
+  --color-neo-accent: #FF6B6B;
+  --color-neo-secondary: #FFD93D;
+  --color-neo-muted: #C4B5FD;
+  --color-neo-white: #FFFFFF;
+
+  /* Hard Shadows */
+  --shadow-neo-sm: 4px 4px 0px 0px #000;
+  --shadow-neo-md: 8px 8px 0px 0px #000;
+  --shadow-neo-lg: 12px 12px 0px 0px #000;
+  --shadow-neo-xl: 16px 16px 0px 0px #000;
+
+  /* Typography */
+  --font-display: "Space Grotesk", sans-serif;
+
+  /* Custom Animations */
+  --animate-spin-slow: spin-slow 10s linear infinite;
+  --animate-float: float 3s ease-in-out infinite;
+  --animate-wiggle: wiggle 0.5s ease-in-out infinite;
+}
+
+/* ============================================
+   BASE STYLES
+   ============================================ */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-display);
+  background-color: var(--color-neo-background);
+  color: var(--color-neo-foreground);
+  font-weight: 700;
+}
+
+/* ============================================
+   NEO-BRUTALISM UTILITY CLASSES
+   ============================================ */
+
+/* Hard shadows */
+.shadow-neo-sm {
+  box-shadow: var(--shadow-neo-sm);
+}
+
+.shadow-neo-md {
+  box-shadow: var(--shadow-neo-md);
+}
+
+.shadow-neo-lg {
+  box-shadow: var(--shadow-neo-lg);
+}
+
+.shadow-neo-xl {
+  box-shadow: var(--shadow-neo-xl);
+}
+
+/* Text stroke for display typography */
+.text-stroke {
+  -webkit-text-stroke: 2px black;
+  color: transparent;
+}
+
+.text-stroke-thick {
+  -webkit-text-stroke: 3px black;
+  color: transparent;
+}
+
+.text-stroke-fill-white {
+  -webkit-text-stroke: 3px black;
+  color: white;
+  paint-order: stroke fill;
+}
+
+/* Text shadows */
+.text-shadow-neo {
+  text-shadow: 4px 4px 0px #000;
+}
+
+.text-shadow-neo-lg {
+  text-shadow: 6px 6px 0px #000;
+}
+
+/* Background patterns */
+.bg-halftone {
+  background-image: radial-gradient(#000 1.5px, transparent 1.5px);
+  background-size: 20px 20px;
+}
+
+.bg-grid {
+  background-size: 40px 40px;
+  background-image:
+    linear-gradient(to right, rgba(0, 0, 0, 0.1) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 1px, transparent 1px);
+}
+
+.bg-dots {
+  background-image: radial-gradient(circle, #000 2px, transparent 2.5px);
+  background-size: 30px 30px;
+}
+
+.bg-noise {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* ============================================
+   KEYFRAME ANIMATIONS
+   ============================================ */
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes wiggle {
+  0%, 100% { transform: rotate(-3deg); }
+  50% { transform: rotate(3deg); }
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 20s linear infinite;
+}
+
+.animate-spin-slow {
+  animation: spin-slow 10s linear infinite;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-wiggle {
+  animation: wiggle 0.5s ease-in-out infinite;
+}
+
+/* ============================================
+   COMPONENT STYLES
+   ============================================ */
+
+/* Button push effect */
+.btn-push {
+  transition: transform 0.1s ease-out, box-shadow 0.1s ease-out;
+}
+
+.btn-push:active {
+  transform: translate(2px, 2px);
+  box-shadow: none !important;
+}
+
+/* Card lift effect */
+.card-lift {
+  transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+}
+
+.card-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 12px 12px 0px 0px #000;
+}
+
+/* Link hover effect */
+.link-brutal {
+  transition: all 0.1s ease-out;
+}
+
+.link-brutal:hover {
+  background-color: var(--color-neo-accent);
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  box-shadow: var(--shadow-neo-sm);
+}
+
+/* ============================================
+   SELECTION STYLES
+   ============================================ */
+
+::selection {
+  background-color: var(--color-neo-accent);
+  color: black;
+}
+
+/* ============================================
+   SCROLLBAR STYLES
+   ============================================ */
+
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-neo-background);
+  border-left: 4px solid black;
+}
+
+::-webkit-scrollbar-thumb {
+  background: black;
+  border: 2px solid var(--color-neo-background);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-neo-accent);
+}
+
+/* ============================================
+   REDUCED MOTION
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-spin-slow,
+  .animate-float,
+  .animate-wiggle,
+  .animate-bounce,
+  .animate-pulse {
+    animation: none;
+  }
+
+  .btn-push,
+  .card-lift,
+  .link-brutal {
+    transition: none;
+  }
+}
