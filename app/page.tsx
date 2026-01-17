@@ -545,10 +545,16 @@ export default function HomePage() {
                   Roadmap
                 </Link>
                 <Link
-                  href="/block"
+                  href="/support"
                   className="font-medium text-sm text-clay-muted hover:text-clay-accent transition-colors"
                 >
-                  Development
+                  Support
+                </Link>
+                <Link
+                  href="/privacy"
+                  className="font-medium text-sm text-clay-muted hover:text-clay-accent transition-colors"
+                >
+                  Privacy
                 </Link>
               </div>
 
