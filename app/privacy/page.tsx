@@ -1,10 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Shield, ArrowLeft } from "lucide-react";
-import { ClayBackground } from "@/components/backgrounds";
+import { MonochromeBackground } from "@/components/backgrounds";
 import { Button } from "@/components/ui/Button";
 import { Card, CardContent } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export const metadata = {
   title: "Privacy Policy - Chunes",
@@ -14,36 +15,37 @@ export const metadata = {
 export default function PrivacyPage() {
   return (
     <div className="min-h-screen">
-      <ClayBackground />
+      <MonochromeBackground />
 
       {/* Navigation */}
-      <nav className="sticky top-4 z-50 mx-4 sm:mx-6 lg:mx-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="glass-strong rounded-[32px] sm:rounded-[40px] px-4 sm:px-8 py-4 sm:py-5 shadow-clayCard">
-            <div className="flex items-center justify-between">
-              {/* Logo */}
-              <Link href="/" className="flex items-center gap-3 group">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl overflow-hidden shadow-clayButton">
-                  <Image
-                    src="/chunes-icon.png"
-                    alt="Chunes"
-                    width={48}
-                    height={48}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <span
-                  className="font-black text-xl sm:text-2xl text-clay-foreground"
-                  style={{ fontFamily: "var(--font-heading)" }}
-                >
-                  Chunes
-                </span>
-              </Link>
+      <nav className="sticky top-0 z-50 bg-[var(--color-background)] border-b-2 border-[var(--color-border)]">
+        <div className="max-w-6xl mx-auto px-6 md:px-8 lg:px-12">
+          <div className="flex items-center justify-between h-20">
+            {/* Logo */}
+            <Link href="/" className="flex items-center gap-3 group">
+              <div className="w-10 h-10 border-2 border-[var(--color-border)] overflow-hidden">
+                <Image
+                  src="/chunes-icon.png"
+                  alt="Chunes"
+                  width={40}
+                  height={40}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <span
+                className="text-2xl tracking-tight"
+                style={{ fontFamily: "var(--font-display)", fontWeight: 700 }}
+              >
+                Chunes
+              </span>
+            </Link>
 
-              {/* Back Button */}
+            {/* Right Actions */}
+            <div className="flex items-center gap-4">
+              <ThemeToggle />
               <Link href="/">
-                <Button variant="secondary" size="sm">
-                  <ArrowLeft className="w-4 h-4" />
+                <Button variant="outline" size="sm">
+                  <ArrowLeft className="w-4 h-4" strokeWidth={1.5} />
                   Back to Home
                 </Button>
               </Link>

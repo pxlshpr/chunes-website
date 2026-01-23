@@ -5,6 +5,7 @@ import { MonochromeBackground } from "@/components/backgrounds";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { SprintHero, TaskBoard, SprintTimeline } from "@/components/sprint";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import {
   parseCurrentSprint,
   parsePlannedSprints,
@@ -193,13 +194,16 @@ export default async function BlockPage() {
               )}
             </div>
 
-            {/* Back Button */}
-            <Link href="/">
-              <Button variant="outline" size="sm">
-                <ArrowLeft className="w-4 h-4" strokeWidth={1.5} />
-                Back
-              </Button>
-            </Link>
+            {/* Right Actions */}
+            <div className="flex items-center gap-4">
+              <ThemeToggle />
+              <Link href="/">
+                <Button variant="outline" size="sm">
+                  <ArrowLeft className="w-4 h-4" strokeWidth={1.5} />
+                  Back
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </nav>

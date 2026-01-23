@@ -48,6 +48,9 @@ export const metadata: Metadata = {
     description:
       "The ultimate iOS app for music lovers who want control.",
   },
+  other: {
+    "color-scheme": "dark light",
+  },
 };
 
 export default function RootLayout({

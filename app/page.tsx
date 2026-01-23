@@ -17,6 +17,7 @@ import { MonochromeBackground } from "@/components/backgrounds";
 import { Button } from "@/components/ui/Button";
 import { Card, CardContent } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 // Sprint/Block data
 const blocks = [
@@ -163,12 +164,15 @@ export default function HomePage() {
               </Link>
             </div>
 
-            {/* CTA */}
-            <Button variant="primary" size="sm">
-              <span className="hidden sm:inline">Join Beta</span>
-              <span className="sm:hidden">Beta</span>
-              <ArrowRight className="w-4 h-4" strokeWidth={1.5} />
-            </Button>
+            {/* Right Actions */}
+            <div className="flex items-center gap-4">
+              <ThemeToggle />
+              <Button variant="primary" size="sm">
+                <span className="hidden sm:inline">Join Beta</span>
+                <span className="sm:hidden">Beta</span>
+                <ArrowRight className="w-4 h-4" strokeWidth={1.5} />
+              </Button>
+            </div>
           </div>
         </div>
       </nav>
