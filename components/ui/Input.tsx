@@ -12,12 +12,12 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     const inputId = id || label?.toLowerCase().replace(/\s+/g, "-");
 
     return (
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-3">
         {label && (
           <label
             htmlFor={inputId}
-            className="font-bold text-sm text-clay-foreground"
-            style={{ fontFamily: "var(--font-heading)" }}
+            className="font-medium text-xs uppercase tracking-[0.1em] text-[var(--color-foreground)]"
+            style={{ fontFamily: "var(--font-mono)" }}
           >
             {label}
           </label>
@@ -26,24 +26,22 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           ref={ref}
           id={inputId}
           className={`
-            h-16 px-6 py-4
-            bg-[#EFEBF5]
-            border-0
-            rounded-2xl
-            font-medium text-lg text-clay-foreground
-            shadow-clayPressed
-            placeholder:text-clay-muted
-            focus:bg-white
-            focus:ring-4 focus:ring-clay-accent/20
+            h-14 px-0 py-4
+            bg-transparent
+            border-0 border-b-2 border-[var(--color-border)]
+            font-normal text-base text-[var(--color-foreground)]
+            placeholder:text-[var(--color-muted-foreground)] placeholder:italic
+            focus:border-b-[4px]
             focus:outline-none
-            transition-all duration-200
-            ${error ? "ring-2 ring-red-400" : ""}
+            transition-none
+            ${error ? "border-b-[var(--color-foreground)]" : ""}
             ${className}
           `}
+          style={{ fontFamily: "var(--font-body)" }}
           {...props}
         />
         {error && (
-          <span className="text-red-500 font-medium text-sm">
+          <span className="text-[var(--color-foreground)] font-medium text-sm italic">
             {error}
           </span>
         )}

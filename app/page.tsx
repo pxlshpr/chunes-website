@@ -7,17 +7,13 @@ import {
   Timer,
   Download,
   ArrowRight,
-  Star,
   Zap,
   Headphones,
-  Disc3,
   Clock,
   BarChart3,
-  Sparkles,
   Heart,
-  CheckCircle2,
 } from "lucide-react";
-import { ClayBackground } from "@/components/backgrounds";
+import { MonochromeBackground } from "@/components/backgrounds";
 import { Button } from "@/components/ui/Button";
 import { Card, CardContent } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
@@ -74,42 +70,36 @@ const features = [
     title: "Smart Tagging",
     description:
       "Organize with 22+ mood tags, activity tags, genres, and custom labels. Every song, perfectly categorized.",
-    gradient: "from-purple-400 to-purple-600",
   },
   {
     icon: Filter,
     title: "Powerful Filters",
     description:
       "Find exactly what you want. Filter by mood, vocals, artist, duration, release date, and more.",
-    gradient: "from-pink-400 to-pink-600",
   },
   {
     icon: Timer,
     title: "Song Markers",
     description:
       "Mark your favorite moments. Jump instantly to verses, choruses, or that perfect drop.",
-    gradient: "from-blue-400 to-blue-600",
   },
   {
     icon: BarChart3,
     title: "Deep Stats",
     description:
       "Track play counts, skip history, and discover forgotten favorites in your library.",
-    gradient: "from-emerald-400 to-emerald-600",
   },
   {
     icon: Music,
     title: "Apple Music Native",
     description:
       "Built for iOS. Works seamlessly with your existing Apple Music library and metadata.",
-    gradient: "from-cyan-400 to-cyan-600",
   },
   {
     icon: Download,
     title: "Your Data, Your Way",
     description:
       "Export your entire music organization. Import, backup, and take control of your data.",
-    gradient: "from-amber-400 to-amber-600",
   },
 ];
 
@@ -123,202 +113,141 @@ const stats = [
 export default function HomePage() {
   return (
     <div className="min-h-screen">
-      <ClayBackground />
+      <MonochromeBackground />
 
       {/* Navigation */}
-      <nav className="sticky top-4 z-50 mx-4 sm:mx-6 lg:mx-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="glass-strong rounded-[32px] sm:rounded-[40px] px-4 sm:px-8 py-4 sm:py-5 shadow-clayCard">
-            <div className="flex items-center justify-between">
-              {/* Logo */}
-              <Link href="/" className="flex items-center gap-3 group">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl overflow-hidden shadow-clayButton">
-                  <Image
-                    src="/chunes-icon.png"
-                    alt="Chunes"
-                    width={48}
-                    height={48}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <span
-                  className="font-black text-xl sm:text-2xl text-clay-foreground"
-                  style={{ fontFamily: "var(--font-heading)" }}
-                >
-                  Chunes
-                </span>
-              </Link>
-
-              {/* Nav Links - Desktop */}
-              <div className="hidden md:flex items-center gap-6">
-                <Link
-                  href="#features"
-                  className="font-bold text-sm text-clay-muted hover:text-clay-accent transition-colors"
-                >
-                  Features
-                </Link>
-                <Link
-                  href="#roadmap"
-                  className="font-bold text-sm text-clay-muted hover:text-clay-accent transition-colors"
-                >
-                  Roadmap
-                </Link>
-                <Link
-                  href="/block"
-                  className="font-bold text-sm text-clay-muted hover:text-clay-accent transition-colors"
-                >
-                  Development
-                </Link>
+      <nav className="sticky top-0 z-50 bg-[var(--color-background)] border-b-2 border-[var(--color-border)]">
+        <div className="max-w-6xl mx-auto px-6 md:px-8 lg:px-12">
+          <div className="flex items-center justify-between h-20">
+            {/* Logo */}
+            <Link href="/" className="flex items-center gap-3 group">
+              <div className="w-10 h-10 border-2 border-[var(--color-border)] overflow-hidden">
+                <Image
+                  src="/chunes-icon.png"
+                  alt="Chunes"
+                  width={40}
+                  height={40}
+                  className="w-full h-full object-cover"
+                />
               </div>
+              <span
+                className="text-2xl tracking-tight text-[var(--color-foreground)]"
+                style={{ fontFamily: "var(--font-display)", fontWeight: 700 }}
+              >
+                Chunes
+              </span>
+            </Link>
 
-              {/* CTA */}
-              <Button variant="primary" size="sm">
-                <Zap className="w-4 h-4" />
-                <span className="hidden sm:inline">Join Beta</span>
-                <span className="sm:hidden">Beta</span>
-              </Button>
+            {/* Nav Links - Desktop */}
+            <div className="hidden md:flex items-center gap-8">
+              <Link
+                href="#features"
+                className="text-sm uppercase tracking-[0.1em] text-[var(--color-foreground)] hover:border-b-2 hover:border-[var(--color-foreground)] pb-1 transition-none font-medium"
+                style={{ fontFamily: "var(--font-mono)" }}
+              >
+                Features
+              </Link>
+              <Link
+                href="#roadmap"
+                className="text-sm uppercase tracking-[0.1em] text-[var(--color-foreground)] hover:border-b-2 hover:border-[var(--color-foreground)] pb-1 transition-none font-medium"
+                style={{ fontFamily: "var(--font-mono)" }}
+              >
+                Roadmap
+              </Link>
+              <Link
+                href="/block"
+                className="text-sm uppercase tracking-[0.1em] text-[var(--color-foreground)] hover:border-b-2 hover:border-[var(--color-foreground)] pb-1 transition-none font-medium"
+                style={{ fontFamily: "var(--font-mono)" }}
+              >
+                Development
+              </Link>
             </div>
+
+            {/* CTA */}
+            <Button variant="primary" size="sm">
+              <span className="hidden sm:inline">Join Beta</span>
+              <span className="sm:hidden">Beta</span>
+              <ArrowRight className="w-4 h-4" strokeWidth={1.5} />
+            </Button>
           </div>
         </div>
       </nav>
 
       {/* Hero Section */}
-      <section className="relative py-16 sm:py-24 md:py-32 overflow-hidden">
-        <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-            {/* Left Content */}
-            <div className="relative z-10 text-center lg:text-left">
-              {/* Badge */}
-              <div className="flex justify-center lg:justify-start mb-6">
-                <Badge variant="accent" size="lg" className="animate-clay-breathe">
-                  <Sparkles className="w-4 h-4 mr-2" />
-                  For Music Lovers
-                </Badge>
-              </div>
-
-              {/* Headline */}
-              <h1
-                className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black leading-[1.1] tracking-tight mb-6"
-                style={{ fontFamily: "var(--font-heading)" }}
-              >
-                <span className="block text-clay-foreground">Organize</span>
-                <span className="block gradient-text">Your Music</span>
-                <span className="block text-clay-foreground">Your Way</span>
-              </h1>
-
-              {/* Tagline */}
-              <p className="text-lg sm:text-xl md:text-2xl font-medium text-clay-muted leading-relaxed mb-8 max-w-lg mx-auto lg:mx-0">
-                The ultimate iOS app for music lovers who want control. Tag,
-                filter, and navigate your library like never before.
-              </p>
-
-              {/* CTAs */}
-              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                <Button variant="primary" size="lg" fullWidth className="sm:w-auto">
-                  <Headphones className="w-5 h-5" />
-                  Join TestFlight
-                  <ArrowRight className="w-5 h-5" />
-                </Button>
-                <Link href="/block" className="w-full sm:w-auto">
-                  <Button variant="secondary" size="lg" fullWidth className="sm:w-auto">
-                    Track Development
-                  </Button>
-                </Link>
-              </div>
+      <section className="relative py-24 md:py-32 lg:py-40 texture-lines">
+        <div className="max-w-6xl mx-auto px-6 md:px-8 lg:px-12">
+          <div className="max-w-5xl">
+            {/* Decorative element */}
+            <div className="flex items-center gap-4 mb-8">
+              <div className="w-3 h-3 border-2 border-[var(--color-border)]" />
+              <div className="h-px flex-1 bg-[var(--color-border)]" />
             </div>
 
-            {/* Right Content - App Preview */}
-            <div className="relative flex justify-center lg:justify-end">
-              {/* Floating decorative orbs */}
-              <div className="absolute -top-8 -left-8 w-20 h-20 rounded-full bg-gradient-to-br from-purple-400 to-purple-600 shadow-clayButton animate-clay-float-slow opacity-80" />
-              <div className="absolute -bottom-8 -right-8 w-28 h-28 rounded-full bg-gradient-to-br from-pink-400 to-pink-600 shadow-clayButton animate-clay-float-delayed opacity-70" />
-              <div className="absolute top-1/2 -right-4 w-16 h-16 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 shadow-clayButton animate-clay-float opacity-60" />
+            {/* Badge */}
+            <div className="mb-8">
+              <Badge variant="accent" size="md">
+                For Music Lovers
+              </Badge>
+            </div>
 
-              {/* Main card */}
-              <Card variant="glass" className="relative z-10 w-full max-w-sm shadow-clayCard">
-                <CardContent className="flex flex-col items-center py-10">
-                  {/* Now Playing header */}
-                  <div className="flex items-center gap-2 mb-6">
-                    <div className="flex gap-1.5">
-                      <div className="w-3 h-3 rounded-full bg-gradient-to-br from-red-400 to-red-500" />
-                      <div className="w-3 h-3 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-500" />
-                      <div className="w-3 h-3 rounded-full bg-gradient-to-br from-green-400 to-green-500" />
-                    </div>
-                    <span
-                      className="font-bold text-sm text-clay-muted ml-2"
-                      style={{ fontFamily: "var(--font-heading)" }}
-                    >
-                      Now Playing
-                    </span>
-                  </div>
+            {/* Oversized Headline */}
+            <h1
+              className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl leading-none tracking-tighter mb-12"
+              style={{ fontFamily: "var(--font-display)", fontWeight: 900 }}
+            >
+              <span className="block">Organize</span>
+              <span className="block italic">Your Music</span>
+              <span className="block">Your Way</span>
+            </h1>
 
-                  {/* Album art */}
-                  <div className="w-44 h-44 rounded-[24px] bg-gradient-to-br from-purple-400 to-purple-600 shadow-clayCard mb-6 flex items-center justify-center">
-                    <Disc3 className="w-20 h-20 text-white/80 animate-[spin_8s_linear_infinite]" />
-                  </div>
+            {/* Tagline */}
+            <p className="text-xl md:text-2xl leading-relaxed mb-12 max-w-2xl" style={{ fontFamily: "var(--font-body)" }}>
+              The ultimate iOS app for music lovers who want control. Tag,
+              filter, and navigate your library like never before.
+            </p>
 
-                  {/* Track info */}
-                  <h3
-                    className="font-black text-xl text-clay-foreground mb-1"
-                    style={{ fontFamily: "var(--font-heading)" }}
-                  >
-                    Your Favorite Song
-                  </h3>
-                  <p className="font-medium text-base text-clay-muted mb-6">
-                    Amazing Artist
-                  </p>
+            {/* CTAs */}
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Button variant="primary" size="lg">
+                Join TestFlight
+                <ArrowRight className="w-4 h-4" strokeWidth={1.5} />
+              </Button>
+              <Link href="/block">
+                <Button variant="outline" size="lg">
+                  Track Development
+                </Button>
+              </Link>
+            </div>
 
-                  {/* Tags preview */}
-                  <div className="flex flex-wrap gap-2 justify-center">
-                    <Badge variant="accent" size="sm">
-                      🔥 Energetic
-                    </Badge>
-                    <Badge variant="default" size="sm">
-                      🎸 Rock
-                    </Badge>
-                    <Badge variant="default" size="sm">
-                      🚗 Driving
-                    </Badge>
-                  </div>
-                </CardContent>
-              </Card>
+            {/* Decorative bottom element */}
+            <div className="flex items-center gap-4 mt-16">
+              <div className="h-px flex-1 bg-[var(--color-border)]" />
+              <div className="w-3 h-3 border-2 border-[var(--color-border)]" />
             </div>
           </div>
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-12 sm:py-16">
-        <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
-            {stats.map((stat, index) => (
-              <div
-                key={stat.label}
-                className="relative group"
-              >
-                <div className="glass-strong rounded-[24px] p-6 sm:p-8 text-center shadow-clayCard card-lift">
-                  <div
-                    className={`w-12 h-12 mx-auto mb-4 rounded-full bg-gradient-to-br ${
-                      index === 0
-                        ? "from-pink-400 to-pink-600"
-                        : index === 1
-                        ? "from-purple-400 to-purple-600"
-                        : index === 2
-                        ? "from-blue-400 to-blue-600"
-                        : "from-emerald-400 to-emerald-600"
-                    } shadow-clayButton flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}
-                  >
-                    <stat.icon className="w-6 h-6 text-white" />
-                  </div>
-                  <div
-                    className="font-black text-3xl sm:text-4xl text-clay-foreground mb-1"
-                    style={{ fontFamily: "var(--font-heading)" }}
-                  >
-                    {stat.value}
-                  </div>
-                  <div className="font-medium text-sm text-clay-muted">
-                    {stat.label}
-                  </div>
+      {/* Section divider */}
+      <hr className="rule-separator" />
+
+      {/* Stats Section - Inverted */}
+      <section className="inverted py-24 md:py-32 texture-lines-inverted relative">
+        <div className="max-w-6xl mx-auto px-6 md:px-8 lg:px-12">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
+            {stats.map((stat) => (
+              <div key={stat.label} className="text-center">
+                <div className="w-16 h-16 mx-auto mb-6 border-2 border-[var(--color-accent-foreground)] flex items-center justify-center">
+                  <stat.icon className="w-8 h-8" strokeWidth={1.5} />
+                </div>
+                <div
+                  className="text-5xl md:text-6xl mb-2 tracking-tighter"
+                  style={{ fontFamily: "var(--font-display)", fontWeight: 900 }}
+                >
+                  {stat.value}
+                </div>
+                <div className="text-sm uppercase tracking-[0.1em]" style={{ fontFamily: "var(--font-mono)" }}>
+                  {stat.label}
                 </div>
               </div>
             ))}
@@ -326,51 +255,48 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Section divider */}
+      <hr className="rule-separator" />
+
       {/* Features Section */}
-      <section id="features" className="py-16 sm:py-24 md:py-32">
-        <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <section id="features" className="py-24 md:py-32 lg:py-40 texture-grid">
+        <div className="max-w-6xl mx-auto px-6 md:px-8 lg:px-12">
           {/* Section Header */}
-          <div className="text-center mb-12 sm:mb-16">
-            <Badge variant="accent" size="lg" className="mb-6">
-              <Zap className="w-4 h-4 mr-2" />
+          <div className="mb-16">
+            <Badge variant="accent" size="md" className="mb-6">
               Features
             </Badge>
             <h2
-              className="font-black text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-clay-foreground tracking-tight mb-6"
-              style={{ fontFamily: "var(--font-heading)" }}
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl tracking-tighter mb-6"
+              style={{ fontFamily: "var(--font-display)", fontWeight: 900 }}
             >
               Everything You Need
             </h2>
-            <p className="text-lg sm:text-xl font-medium text-clay-muted max-w-2xl mx-auto leading-relaxed">
-              Built for power users who want complete control over their music
-              library.
+            <p className="text-xl leading-relaxed max-w-2xl" style={{ fontFamily: "var(--font-body)" }}>
+              Built for power users who want complete control over their music library.
             </p>
           </div>
 
-          {/* Features Grid - Bento Style */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {features.map((feature, index) => (
+          {/* Features Grid */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-0 border-t-2 border-l-2 border-[var(--color-border)]">
+            {features.map((feature) => (
               <Card
                 key={feature.title}
-                variant="glass"
+                variant="border"
                 hoverable
-                className={`${
-                  index === 0 ? "md:col-span-2 lg:col-span-1" : ""
-                }`}
+                className="border-l-0 border-t-0 border-r-2 border-b-2 group-hover:border-0"
               >
-                <CardContent className="p-6 sm:p-8">
-                  <div
-                    className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${feature.gradient} shadow-clayButton flex items-center justify-center mb-6`}
-                  >
-                    <feature.icon className="w-7 h-7 text-white" />
+                <CardContent className="p-8">
+                  <div className="w-12 h-12 border-2 border-[var(--color-border)] flex items-center justify-center mb-6 group-hover:border-[var(--color-accent-foreground)] transition-colors duration-100">
+                    <feature.icon className="w-6 h-6" strokeWidth={1.5} />
                   </div>
                   <h3
-                    className="font-extrabold text-xl sm:text-2xl text-clay-foreground mb-3"
-                    style={{ fontFamily: "var(--font-heading)" }}
+                    className="text-2xl mb-3 tracking-tight"
+                    style={{ fontFamily: "var(--font-display)", fontWeight: 700 }}
                   >
                     {feature.title}
                   </h3>
-                  <p className="font-medium text-base text-clay-muted leading-relaxed">
+                  <p className="text-base leading-relaxed" style={{ fontFamily: "var(--font-body)" }}>
                     {feature.description}
                   </p>
                 </CardContent>
@@ -380,77 +306,74 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Section divider */}
+      <hr className="rule-separator" />
+
       {/* Roadmap Section */}
-      <section id="roadmap" className="py-16 sm:py-24 md:py-32">
-        <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <section id="roadmap" className="py-24 md:py-32 lg:py-40">
+        <div className="max-w-6xl mx-auto px-6 md:px-8 lg:px-12">
           {/* Section Header */}
-          <div className="text-center mb-12 sm:mb-16">
-            <Badge variant="default" size="lg" className="mb-6">
-              <Clock className="w-4 h-4 mr-2" />
+          <div className="mb-16">
+            <Badge variant="default" size="md" className="mb-6">
               Development
             </Badge>
             <h2
-              className="font-black text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-clay-foreground tracking-tight mb-6"
-              style={{ fontFamily: "var(--font-heading)" }}
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl tracking-tighter mb-6"
+              style={{ fontFamily: "var(--font-display)", fontWeight: 900 }}
             >
               The Roadmap
             </h2>
-            <p className="text-lg sm:text-xl font-medium text-clay-muted max-w-2xl mx-auto leading-relaxed">
+            <p className="text-xl leading-relaxed max-w-2xl" style={{ fontFamily: "var(--font-body)" }}>
               Building Chunes in public. Six blocks. 18 days. One mission.
             </p>
           </div>
 
           {/* Blocks Timeline */}
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {blocks.map((block, index) => {
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-0 border-t-2 border-l-2 border-[var(--color-border)]">
+            {blocks.map((block) => {
               const isCurrent = block.status === "current";
               return (
                 <Card
                   key={block.number}
-                  variant={isCurrent ? "solid" : "glass"}
+                  variant={isCurrent ? "inverted" : "border"}
                   hoverable
-                  className={`relative ${
-                    isCurrent ? "ring-4 ring-clay-accent/30" : ""
-                  }`}
+                  className={`relative border-l-0 border-t-0 border-r-2 border-b-2 ${isCurrent ? "border-0" : ""}`}
                 >
                   {isCurrent && (
                     <Badge
                       variant="accent"
                       size="sm"
-                      className="absolute -top-3 -right-3 z-10 animate-clay-breathe"
+                      className="absolute -top-3 -right-3 z-10 bg-[var(--color-background)] text-[var(--color-foreground)] border border-[var(--color-border)]"
                     >
-                      <Zap className="w-3 h-3 mr-1" />
                       Live
                     </Badge>
                   )}
-                  <CardContent className="p-6 sm:p-8">
-                    <div className="flex items-center justify-between mb-4">
+                  <CardContent className="p-8">
+                    <div className="flex items-center justify-between mb-6">
                       <div
-                        className={`w-12 h-12 rounded-full flex items-center justify-center font-black text-xl ${
+                        className={`w-12 h-12 border-2 flex items-center justify-center text-xl ${
                           isCurrent
-                            ? "bg-gradient-to-br from-purple-400 to-purple-600 text-white shadow-clayButton"
-                            : "bg-clay-muted/10 text-clay-muted"
+                            ? "border-[var(--color-accent-foreground)]"
+                            : "border-[var(--color-border)]"
                         }`}
-                        style={{ fontFamily: "var(--font-heading)" }}
+                        style={{ fontFamily: "var(--font-mono)", fontWeight: 500 }}
                       >
                         {block.number.toString().padStart(2, "0")}
                       </div>
                       <span
-                        className={`font-bold text-lg ${
-                          isCurrent ? "text-clay-accent" : "text-clay-muted"
-                        }`}
-                        style={{ fontFamily: "var(--font-heading)" }}
+                        className="text-sm uppercase tracking-[0.1em] italic"
+                        style={{ fontFamily: "var(--font-display)" }}
                       >
                         {block.name}
                       </span>
                     </div>
                     <h3
-                      className="font-extrabold text-lg text-clay-foreground mb-2"
-                      style={{ fontFamily: "var(--font-heading)" }}
+                      className="text-xl mb-2 tracking-tight"
+                      style={{ fontFamily: "var(--font-display)", fontWeight: 700 }}
                     >
                       {block.theme}
                     </h3>
-                    <p className="font-medium text-sm text-clay-muted">
+                    <p className="text-sm uppercase tracking-[0.1em]" style={{ fontFamily: "var(--font-mono)" }}>
                       {block.dates}, 2026
                     </p>
                   </CardContent>
@@ -460,110 +383,108 @@ export default function HomePage() {
           </div>
 
           {/* View Details CTA */}
-          <div className="text-center mt-10 sm:mt-12">
+          <div className="mt-12">
             <Link href="/block">
-              <Button variant="secondary" size="lg">
+              <Button variant="outline" size="lg">
                 View Current Sprint
-                <ArrowRight className="w-5 h-5" />
+                <ArrowRight className="w-4 h-4" strokeWidth={1.5} />
               </Button>
             </Link>
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-16 sm:py-24 md:py-32">
-        <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <Card variant="solid" className="relative overflow-hidden">
-            {/* Background gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-pink-500/5 to-transparent" />
+      {/* Section divider */}
+      <hr className="rule-separator" />
 
-            <CardContent className="relative z-10 py-12 sm:py-16 md:py-20 text-center">
-              <h2
-                className="font-black text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-clay-foreground tracking-tight mb-6"
-                style={{ fontFamily: "var(--font-heading)" }}
-              >
-                Ready to Take Control?
-              </h2>
-              <p className="text-lg sm:text-xl font-medium text-clay-muted mb-10 sm:mb-12 max-w-2xl mx-auto leading-relaxed">
-                Join the beta and be among the first to experience a new way to
-                organize your music.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button variant="primary" size="lg" fullWidth className="sm:w-auto">
-                  <Headphones className="w-5 h-5" />
-                  Join TestFlight
-                  <ArrowRight className="w-5 h-5" />
+      {/* CTA Section */}
+      <section className="py-24 md:py-32 lg:py-40">
+        <div className="max-w-6xl mx-auto px-6 md:px-8 lg:px-12">
+          <div className="text-center">
+            <h2
+              className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tighter mb-8"
+              style={{ fontFamily: "var(--font-display)", fontWeight: 900 }}
+            >
+              Ready to Take
+              <span className="block italic">Control?</span>
+            </h2>
+            <p className="text-xl leading-relaxed mb-12 max-w-2xl mx-auto" style={{ fontFamily: "var(--font-body)" }}>
+              Join the beta and be among the first to experience a new way to organize your music.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button variant="primary" size="lg">
+                Join TestFlight
+                <ArrowRight className="w-4 h-4" strokeWidth={1.5} />
+              </Button>
+              <Link href="/block">
+                <Button variant="outline" size="lg">
+                  Follow Development
                 </Button>
-                <Link href="/block" className="w-full sm:w-auto">
-                  <Button variant="outline" size="lg" fullWidth className="sm:w-auto">
-                    Follow Development
-                  </Button>
-                </Link>
-              </div>
-            </CardContent>
-          </Card>
+              </Link>
+            </div>
+          </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="py-10 sm:py-12">
-        <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="glass-strong rounded-[32px] px-6 sm:px-8 py-8 shadow-clayCard">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-              {/* Logo */}
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-2xl overflow-hidden shadow-clayButton">
-                  <Image
-                    src="/chunes-icon.png"
-                    alt="Chunes"
-                    width={40}
-                    height={40}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <span
-                  className="font-black text-xl text-clay-foreground"
-                  style={{ fontFamily: "var(--font-heading)" }}
-                >
-                  Chunes
-                </span>
+      <footer className="border-t-2 border-[var(--color-border)] py-12">
+        <div className="max-w-6xl mx-auto px-6 md:px-8 lg:px-12">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-8">
+            {/* Logo */}
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 border-2 border-[var(--color-border)] overflow-hidden">
+                <Image
+                  src="/chunes-icon.png"
+                  alt="Chunes"
+                  width={40}
+                  height={40}
+                  className="w-full h-full object-cover"
+                />
               </div>
-
-              {/* Links */}
-              <div className="flex items-center gap-6">
-                <Link
-                  href="#features"
-                  className="font-medium text-sm text-clay-muted hover:text-clay-accent transition-colors"
-                >
-                  Features
-                </Link>
-                <Link
-                  href="#roadmap"
-                  className="font-medium text-sm text-clay-muted hover:text-clay-accent transition-colors"
-                >
-                  Roadmap
-                </Link>
-                <Link
-                  href="/support"
-                  className="font-medium text-sm text-clay-muted hover:text-clay-accent transition-colors"
-                >
-                  Support
-                </Link>
-                <Link
-                  href="/privacy"
-                  className="font-medium text-sm text-clay-muted hover:text-clay-accent transition-colors"
-                >
-                  Privacy
-                </Link>
-              </div>
-
-              {/* Copyright */}
-              <p className="font-medium text-sm text-clay-muted">
-                &copy; 2026 Chunes. Built with{" "}
-                <Heart className="w-4 h-4 inline text-clay-accent-alt" />
-              </p>
+              <span
+                className="text-xl tracking-tight"
+                style={{ fontFamily: "var(--font-display)", fontWeight: 700 }}
+              >
+                Chunes
+              </span>
             </div>
+
+            {/* Links */}
+            <div className="flex items-center gap-8">
+              <Link
+                href="#features"
+                className="text-sm uppercase tracking-[0.1em] hover:border-b-2 hover:border-[var(--color-foreground)] pb-1 transition-none font-medium"
+                style={{ fontFamily: "var(--font-mono)" }}
+              >
+                Features
+              </Link>
+              <Link
+                href="#roadmap"
+                className="text-sm uppercase tracking-[0.1em] hover:border-b-2 hover:border-[var(--color-foreground)] pb-1 transition-none font-medium"
+                style={{ fontFamily: "var(--font-mono)" }}
+              >
+                Roadmap
+              </Link>
+              <Link
+                href="/support"
+                className="text-sm uppercase tracking-[0.1em] hover:border-b-2 hover:border-[var(--color-foreground)] pb-1 transition-none font-medium"
+                style={{ fontFamily: "var(--font-mono)" }}
+              >
+                Support
+              </Link>
+              <Link
+                href="/privacy"
+                className="text-sm uppercase tracking-[0.1em] hover:border-b-2 hover:border-[var(--color-foreground)] pb-1 transition-none font-medium"
+                style={{ fontFamily: "var(--font-mono)" }}
+              >
+                Privacy
+              </Link>
+            </div>
+
+            {/* Copyright */}
+            <p className="text-sm" style={{ fontFamily: "var(--font-mono)" }}>
+              &copy; 2026 Chunes
+            </p>
           </div>
         </div>
       </footer>

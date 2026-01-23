@@ -1,17 +1,25 @@
 import type { Metadata } from "next";
-import { Nunito, DM_Sans } from "next/font/google";
+import { Playfair_Display, Source_Serif_4, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
-const nunito = Nunito({
+const playfairDisplay = Playfair_Display({
   subsets: ["latin"],
-  weight: ["700", "800", "900"],
-  variable: "--font-heading",
+  weight: ["400", "700", "900"],
+  style: ["normal", "italic"],
+  variable: "--font-display",
 });
 
-const dmSans = DM_Sans({
+const sourceSerif4 = Source_Serif_4({
   subsets: ["latin"],
-  weight: ["400", "500", "700"],
+  weight: ["400", "600", "700"],
+  style: ["normal", "italic"],
   variable: "--font-body",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-mono",
 });
 
 export const metadata: Metadata = {
@@ -49,7 +57,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${nunito.variable} ${dmSans.variable} font-body antialiased`}>
+      <body className={`${playfairDisplay.variable} ${sourceSerif4.variable} ${jetbrainsMono.variable} font-body antialiased`}>
         {children}
       </body>
     </html>

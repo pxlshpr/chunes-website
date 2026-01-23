@@ -22,48 +22,36 @@ function getStatusConfig(status: string) {
   if (s.includes("done") || s.includes("completed")) {
     return {
       icon: CheckCircle2,
-      gradient: "from-emerald-400 to-emerald-600",
       label: "Done",
-      textColor: "text-clay-success",
     };
   }
   if (s.includes("running") || s.includes("in progress")) {
     return {
       icon: Play,
-      gradient: "from-purple-400 to-purple-600",
       label: "Running",
-      textColor: "text-clay-accent",
     };
   }
   if (s.includes("testing")) {
     return {
       icon: AlertTriangle,
-      gradient: "from-amber-400 to-amber-600",
       label: "Testing",
-      textColor: "text-clay-warning",
     };
   }
   if (s.includes("ready") || s.includes("queue")) {
     return {
       icon: Clock,
-      gradient: "from-blue-400 to-blue-600",
       label: "Ready",
-      textColor: "text-clay-sky",
     };
   }
   if (s.includes("blocked") || s.includes("paused")) {
     return {
       icon: Pause,
-      gradient: "from-gray-400 to-gray-500",
       label: "Blocked",
-      textColor: "text-clay-muted",
     };
   }
   return {
     icon: Circle,
-    gradient: "from-gray-300 to-gray-400",
     label: status,
-    textColor: "text-clay-muted",
   };
 }
 
@@ -71,18 +59,18 @@ function getPriorityConfig(priority: string) {
   const p = priority.toLowerCase();
 
   if (p.includes("urgent")) {
-    return { gradient: "from-red-400 to-red-600", label: "Urgent", variant: "accent" as const };
+    return { label: "Urgent", variant: "accent" as const };
   }
   if (p.includes("high")) {
-    return { gradient: "from-orange-400 to-orange-600", label: "High", variant: "warning" as const };
+    return { label: "High", variant: "warning" as const };
   }
   if (p.includes("medium")) {
-    return { gradient: "from-blue-400 to-blue-600", label: "Medium", variant: "default" as const };
+    return { label: "Medium", variant: "default" as const };
   }
   if (p.includes("low")) {
-    return { gradient: "from-gray-400 to-gray-500", label: "Low", variant: "muted" as const };
+    return { label: "Low", variant: "muted" as const };
   }
-  return { gradient: "from-gray-300 to-gray-400", label: priority, variant: "muted" as const };
+  return { label: priority, variant: "muted" as const };
 }
 
 export function TaskBoard({ tasks }: TaskBoardProps) {
@@ -111,7 +99,7 @@ export function TaskBoard({ tasks }: TaskBoardProps) {
   }, {} as Record<string, number>);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Status Summary */}
       <div className="flex flex-wrap gap-3">
         {Object.entries(statusCounts).map(([status, count]) => {
@@ -119,12 +107,12 @@ export function TaskBoard({ tasks }: TaskBoardProps) {
           return (
             <div
               key={status}
-              className="glass rounded-full px-4 py-2 shadow-clayCard flex items-center gap-2"
+              className="border border-[var(--color-border)] px-4 py-2 flex items-center gap-3"
             >
-              <div className={`w-6 h-6 rounded-full bg-gradient-to-br ${config.gradient} flex items-center justify-center`}>
-                <config.icon className="w-3 h-3 text-white" />
+              <div className="w-6 h-6 border border-[var(--color-border)] flex items-center justify-center">
+                <config.icon className="w-4 h-4" strokeWidth={1.5} />
               </div>
-              <span className="font-bold text-sm text-clay-foreground">
+              <span className="text-sm uppercase tracking-[0.1em]" style={{ fontFamily: "var(--font-mono)" }}>
                 {count} {status}
               </span>
             </div>
@@ -133,7 +121,7 @@ export function TaskBoard({ tasks }: TaskBoardProps) {
       </div>
 
       {/* Task Grid */}
-      <div className="grid gap-4">
+      <div className="grid gap-0 border-t-2 border-l-2 border-[var(--color-border)]">
         {sortedTasks.map((task) => {
           const statusConfig = getStatusConfig(task.status);
           const priorityConfig = getPriorityConfig(task.priority);
@@ -144,22 +132,23 @@ export function TaskBoard({ tasks }: TaskBoardProps) {
           return (
             <Card
               key={task.id}
-              variant="glass"
+              variant="border"
               hoverable
               className={`
-                ${isRunning ? "ring-2 ring-clay-accent/50" : ""}
-                ${isDone ? "opacity-70" : ""}
+                border-l-0 border-t-0 border-r-2 border-b-2
+                ${isRunning ? "border-[4px]" : ""}
+                ${isDone ? "opacity-50" : ""}
               `}
             >
-              <CardContent className="p-5 sm:p-6">
+              <CardContent className="p-6">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   {/* Left Content */}
                   <div className="flex-1 min-w-0">
-                    <div className="flex flex-wrap items-center gap-2 mb-2">
+                    <div className="flex flex-wrap items-center gap-2 mb-3">
                       {/* Task ID */}
                       <code
-                        className="font-bold text-xs px-2 py-1 rounded-lg bg-gradient-to-br from-purple-400 to-purple-600 text-white"
-                        style={{ fontFamily: "var(--font-body)" }}
+                        className="text-xs px-2 py-1 border border-[var(--color-border)] bg-[var(--color-foreground)] text-[var(--color-accent-foreground)]"
+                        style={{ fontFamily: "var(--font-mono)" }}
                       >
                         {task.id}
                       </code>
@@ -172,23 +161,21 @@ export function TaskBoard({ tasks }: TaskBoardProps) {
 
                     {/* Title */}
                     <h3
-                      className={`font-extrabold text-lg sm:text-xl text-clay-foreground ${
+                      className={`text-xl ${
                         isDone ? "line-through opacity-60" : ""
                       }`}
-                      style={{ fontFamily: "var(--font-heading)" }}
+                      style={{ fontFamily: "var(--font-display)", fontWeight: 700 }}
                     >
                       {task.title}
                     </h3>
                   </div>
 
                   {/* Status */}
-                  <div
-                    className={`flex items-center gap-2 px-4 py-2 rounded-[16px] bg-gradient-to-br ${statusConfig.gradient} shadow-clayButton`}
-                  >
-                    <StatusIcon className="w-4 h-4 text-white" />
+                  <div className="flex items-center gap-2 border border-[var(--color-border)] px-4 py-2">
+                    <StatusIcon className="w-4 h-4" strokeWidth={1.5} />
                     <span
-                      className="font-bold text-sm text-white"
-                      style={{ fontFamily: "var(--font-heading)" }}
+                      className="text-sm uppercase tracking-[0.1em]"
+                      style={{ fontFamily: "var(--font-mono)" }}
                     >
                       {statusConfig.label}
                     </span>
@@ -197,7 +184,7 @@ export function TaskBoard({ tasks }: TaskBoardProps) {
 
                 {/* Running indicator */}
                 {isRunning && (
-                  <div className="mt-4 h-1 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 animate-pulse" />
+                  <div className="mt-4 h-1 bg-[var(--color-foreground)]" />
                 )}
               </CardContent>
             </Card>

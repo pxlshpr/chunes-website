@@ -4,13 +4,13 @@ import { type ReactNode, type HTMLAttributes } from "react";
 
 interface CardProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
-  variant?: "default" | "glass" | "solid";
+  variant?: "default" | "border" | "inverted";
   hoverable?: boolean;
 }
 
 interface CardHeaderProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
-  gradient?: boolean;
+  inverted?: boolean;
 }
 
 interface CardContentProps extends HTMLAttributes<HTMLDivElement> {
@@ -18,9 +18,9 @@ interface CardContentProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 const cardVariants = {
-  default: "bg-white/70 backdrop-blur-xl",
-  glass: "glass",
-  solid: "bg-white",
+  default: "bg-[var(--color-card)] border border-[var(--color-border-light)]",
+  border: "bg-[var(--color-card)] border-2 border-[var(--color-border)]",
+  inverted: "bg-[var(--color-foreground)] text-[var(--color-accent-foreground)] border-0",
 };
 
 export function Card({
@@ -34,11 +34,9 @@ export function Card({
     <div
       className={`
         relative overflow-hidden
-        rounded-[32px]
-        text-clay-foreground
-        shadow-clayCard
+        text-[var(--color-card-foreground)]
         ${cardVariants[variant]}
-        ${hoverable ? "card-lift cursor-pointer hover:shadow-clayCardHover" : ""}
+        ${hoverable ? "group cursor-pointer transition-colors duration-100 hover:bg-[var(--color-foreground)] hover:text-[var(--color-accent-foreground)]" : ""}
         ${className}
       `}
       {...props}
@@ -50,7 +48,7 @@ export function Card({
 
 export function CardHeader({
   children,
-  gradient = false,
+  inverted = false,
   className = "",
   ...props
 }: CardHeaderProps) {
@@ -58,7 +56,7 @@ export function CardHeader({
     <div
       className={`
         px-8 py-6
-        ${gradient ? "gradient-primary text-white" : "border-b border-clay-accent/10"}
+        ${inverted ? "bg-[var(--color-foreground)] text-[var(--color-accent-foreground)]" : "border-b border-[var(--color-border-light)]"}
         ${className}
       `}
       {...props}

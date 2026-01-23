@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft, RefreshCw, ExternalLink } from "lucide-react";
-import { ClayBackground } from "@/components/backgrounds";
+import { MonochromeBackground } from "@/components/backgrounds";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { SprintHero, TaskBoard, SprintTimeline } from "@/components/sprint";
@@ -150,30 +150,27 @@ export default async function BlockPage() {
   const progress = calculateProgress(sprint.tasks);
 
   return (
-    <div className="min-h-screen bg-clay-background">
-      <ClayBackground />
+    <div className="min-h-screen">
+      <MonochromeBackground />
 
       {/* Navigation */}
-      <nav className="sticky top-0 z-50 glass-strong backdrop-blur-xl border-b border-white/20">
-        <div className="container mx-auto max-w-7xl px-6 py-4">
-          <div className="flex items-center justify-between">
+      <nav className="sticky top-0 z-50 bg-[var(--color-background)] border-b-2 border-[var(--color-border)]">
+        <div className="max-w-6xl mx-auto px-6 md:px-8 lg:px-12">
+          <div className="flex items-center justify-between h-20">
             {/* Back to Home */}
-            <Link
-              href="/"
-              className="flex items-center gap-3 group"
-            >
-              <div className="w-12 h-12 rounded-[16px] gradient-primary shadow-clayButton overflow-hidden">
+            <Link href="/" className="flex items-center gap-3 group">
+              <div className="w-10 h-10 border-2 border-[var(--color-border)] overflow-hidden">
                 <Image
                   src="/chunes-icon.png"
                   alt="Chunes"
-                  width={48}
-                  height={48}
+                  width={40}
+                  height={40}
                   className="w-full h-full object-cover"
                 />
               </div>
               <span
-                className="font-black text-2xl text-clay-foreground"
-                style={{ fontFamily: "var(--font-heading)" }}
+                className="text-2xl tracking-tight"
+                style={{ fontFamily: "var(--font-display)", fontWeight: 700 }}
               >
                 Chunes
               </span>
@@ -181,12 +178,12 @@ export default async function BlockPage() {
 
             {/* Page Title & Status */}
             <div className="hidden md:flex items-center gap-3">
-              <Badge variant="muted" size="md">
+              <Badge variant="default" size="sm">
                 Development Tracker
               </Badge>
               {isLive ? (
                 <Badge variant="accent" size="sm">
-                  <RefreshCw className="w-3 h-3 mr-1 animate-spin-slow" />
+                  <RefreshCw className="w-3 h-3 mr-1" strokeWidth={1.5} />
                   Live
                 </Badge>
               ) : (
@@ -199,7 +196,7 @@ export default async function BlockPage() {
             {/* Back Button */}
             <Link href="/">
               <Button variant="outline" size="sm">
-                <ArrowLeft className="w-4 h-4" />
+                <ArrowLeft className="w-4 h-4" strokeWidth={1.5} />
                 Back
               </Button>
             </Link>
@@ -208,18 +205,20 @@ export default async function BlockPage() {
       </nav>
 
       {/* Main Content */}
-      <main className="container mx-auto max-w-7xl px-6 py-12 relative z-10">
+      <main className="max-w-6xl mx-auto px-6 md:px-8 lg:px-12 py-16 relative z-10">
         {/* Sprint Hero */}
         <section className="mb-16">
           <SprintHero sprint={sprint} progress={progress} />
         </section>
 
+        <hr className="rule-separator mb-16" />
+
         {/* Tasks Section */}
         <section className="mb-16">
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center justify-between mb-8">
             <h2
-              className="font-extrabold text-3xl md:text-4xl text-clay-foreground"
-              style={{ fontFamily: "var(--font-heading)" }}
+              className="text-4xl md:text-5xl tracking-tighter"
+              style={{ fontFamily: "var(--font-display)", fontWeight: 900 }}
             >
               Sprint Tasks
             </h2>
@@ -232,64 +231,68 @@ export default async function BlockPage() {
 
         {/* Daily Log */}
         {sprint.dailyLog.length > 0 && (
-          <section className="mb-16">
-            <h2
-              className="font-extrabold text-3xl md:text-4xl text-clay-foreground mb-6"
-              style={{ fontFamily: "var(--font-heading)" }}
-            >
-              Daily Log
-            </h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              {sprint.dailyLog.map((day, idx) => (
-                <div
-                  key={day.day}
-                  className="glass-strong rounded-[24px] p-6 shadow-clayCard animate-in fade-in slide-in-from-bottom-4"
-                  style={{ animationDelay: `${idx * 100}ms` }}
-                >
-                  <div className="flex items-center justify-between mb-4">
-                    <span
-                      className="font-black text-2xl text-clay-foreground"
-                      style={{ fontFamily: "var(--font-heading)" }}
-                    >
-                      Day {day.day}
-                    </span>
-                    <span className="font-medium text-sm text-clay-muted">
-                      {day.date}
-                    </span>
-                  </div>
-                  <div className="space-y-3">
-                    <div>
-                      <span className="font-bold text-xs text-clay-muted uppercase tracking-wider">
-                        Standup
+          <>
+            <hr className="rule-separator mb-16" />
+            <section className="mb-16">
+              <h2
+                className="text-4xl md:text-5xl tracking-tighter mb-8"
+                style={{ fontFamily: "var(--font-display)", fontWeight: 900 }}
+              >
+                Daily Log
+              </h2>
+              <div className="grid md:grid-cols-3 gap-0 border-t-2 border-l-2 border-[var(--color-border)]">
+                {sprint.dailyLog.map((day) => (
+                  <div
+                    key={day.day}
+                    className="border-r-2 border-b-2 border-[var(--color-border)] p-6"
+                  >
+                    <div className="flex items-center justify-between mb-6">
+                      <span
+                        className="text-3xl tracking-tighter"
+                        style={{ fontFamily: "var(--font-display)", fontWeight: 900 }}
+                      >
+                        Day {day.day}
                       </span>
-                      <p className="font-medium text-clay-foreground">
-                        {day.morningStandup === "-" ? "—" : day.morningStandup}
-                      </p>
-                    </div>
-                    <div>
-                      <span className="font-bold text-xs text-clay-muted uppercase tracking-wider">
-                        EOD Summary
+                      <span className="text-xs uppercase tracking-[0.1em]" style={{ fontFamily: "var(--font-mono)" }}>
+                        {day.date}
                       </span>
-                      <p className="font-medium text-clay-foreground">
-                        {day.eodSummary === "-" ? "—" : day.eodSummary}
-                      </p>
                     </div>
-                    {day.buildSubmitted && (
+                    <div className="space-y-4">
                       <div>
-                        <span className="font-bold text-xs text-clay-muted uppercase tracking-wider">
-                          Build
+                        <span className="text-xs uppercase tracking-[0.1em] mb-1 block" style={{ fontFamily: "var(--font-mono)" }}>
+                          Standup
                         </span>
-                        <p className="font-medium text-clay-foreground">
-                          {day.buildSubmitted === "-" ? "—" : day.buildSubmitted}
+                        <p className="text-sm" style={{ fontFamily: "var(--font-body)" }}>
+                          {day.morningStandup === "-" ? "—" : day.morningStandup}
                         </p>
                       </div>
-                    )}
+                      <div>
+                        <span className="text-xs uppercase tracking-[0.1em] mb-1 block" style={{ fontFamily: "var(--font-mono)" }}>
+                          EOD Summary
+                        </span>
+                        <p className="text-sm" style={{ fontFamily: "var(--font-body)" }}>
+                          {day.eodSummary === "-" ? "—" : day.eodSummary}
+                        </p>
+                      </div>
+                      {day.buildSubmitted && (
+                        <div>
+                          <span className="text-xs uppercase tracking-[0.1em] mb-1 block" style={{ fontFamily: "var(--font-mono)" }}>
+                            Build
+                          </span>
+                          <p className="text-sm" style={{ fontFamily: "var(--font-body)" }}>
+                            {day.buildSubmitted === "-" ? "—" : day.buildSubmitted}
+                          </p>
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          </section>
+                ))}
+              </div>
+            </section>
+          </>
         )}
+
+        <hr className="rule-separator mb-16" />
 
         {/* Sprint Timeline */}
         <SprintTimeline
@@ -299,29 +302,27 @@ export default async function BlockPage() {
         />
 
         {/* Linear Link */}
-        <section className="text-center py-12 mt-8">
-          <div className="glass-strong rounded-[32px] p-8 shadow-clayCard max-w-md mx-auto">
-            <p className="font-medium text-lg text-clay-muted mb-4">
-              Want to see more details?
-            </p>
-            <a
-              href="https://linear.app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Button variant="primary" size="lg">
-                <ExternalLink className="w-5 h-5" />
-                View in Linear
-              </Button>
-            </a>
-          </div>
+        <section className="text-center py-16 mt-16 border-2 border-[var(--color-border)]">
+          <p className="text-lg mb-6" style={{ fontFamily: "var(--font-body)" }}>
+            Want to see more details?
+          </p>
+          <a
+            href="https://linear.app"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Button variant="primary" size="lg">
+              View in Linear
+              <ExternalLink className="w-4 h-4" strokeWidth={1.5} />
+            </Button>
+          </a>
         </section>
       </main>
 
       {/* Footer */}
-      <footer className="py-8 glass-strong border-t border-white/20 relative z-10">
-        <div className="container mx-auto max-w-7xl px-6 text-center">
-          <p className="font-medium text-sm text-clay-muted">
+      <footer className="py-12 border-t-2 border-[var(--color-border)] relative z-10">
+        <div className="max-w-6xl mx-auto px-6 text-center">
+          <p className="text-sm uppercase tracking-[0.1em]" style={{ fontFamily: "var(--font-mono)" }}>
             Building Chunes in public • 6 Blocks • 18 Days
           </p>
         </div>
