@@ -1,22 +1,55 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowLeft, RefreshCw, ExternalLink } from "lucide-react";
-import { MonochromeBackground } from "@/components/backgrounds";
-import { Button } from "@/components/ui/Button";
-import { Badge } from "@/components/ui/Badge";
-import { SprintHero, TaskBoard, SprintTimeline } from "@/components/sprint";
-import { ThemeToggle } from "@/components/ThemeToggle";
-import {
-  parseCurrentSprint,
-  parsePlannedSprints,
-  calculateProgress,
-  type SprintData,
-  type PlannedBlock,
-} from "@/lib/sprint-parser";
+import { ArrowLeft, RefreshCw, ExternalLink, CheckCircle2, Circle, Clock } from "lucide-react";
 
-export const revalidate = 30; // Revalidate every 30 seconds
+export const revalidate = 30;
 
-// Fallback data in case API calls fail
+type TaskStatus = "Ready" | "In Progress" | "Done" | "Planned";
+type TaskPriority = "Urgent" | "High" | "Medium" | "Low";
+
+interface Task {
+  id: string;
+  title: string;
+  status: TaskStatus;
+  priority: TaskPriority;
+}
+
+interface DailyLog {
+  day: number;
+  date: string;
+  morningStandup: string;
+  eodSummary: string;
+  buildSubmitted?: string;
+}
+
+interface SprintData {
+  status: string;
+  blockNumber: number;
+  blockLabel: string;
+  theme: string;
+  startDate: string;
+  endDate: string;
+  goal: string;
+  tasks: Task[];
+  dailyLog: DailyLog[];
+  blockers: string;
+  outcome: {
+    tasksPlanned: number;
+    tasksCompleted: number;
+    buildVersion: string;
+    submitted: string;
+  };
+}
+
+interface PlannedBlock {
+  number: number;
+  name: string;
+  dates: string;
+  focus: string;
+  tasks: Task[];
+}
+
+// Fallback data
 const fallbackSprintData: SprintData = {
   status: "NOT STARTED",
   blockNumber: 1,
@@ -120,47 +153,57 @@ const fallbackPlannedBlocks: PlannedBlock[] = [
   },
 ];
 
-async function getSprintData(): Promise<{
-  sprint: SprintData;
-  blocks: PlannedBlock[];
-  isLive: boolean;
-}> {
-  try {
-    const [sprint, blocks] = await Promise.all([
-      parseCurrentSprint(),
-      parsePlannedSprints(),
-    ]);
-
-    return {
-      sprint: sprint || fallbackSprintData,
-      blocks: blocks.length > 0 ? blocks : fallbackPlannedBlocks,
-      isLive: !!(sprint && blocks.length > 0),
-    };
-  } catch (error) {
-    console.error("Error fetching sprint data:", error);
-    return {
-      sprint: fallbackSprintData,
-      blocks: fallbackPlannedBlocks,
-      isLive: false,
-    };
+function getStatusIcon(status: TaskStatus) {
+  switch (status) {
+    case "Done":
+      return <CheckCircle2 className="w-4 h-4 text-green-400" />;
+    case "In Progress":
+      return <Clock className="w-4 h-4 text-[var(--accent-secondary)]" />;
+    default:
+      return <Circle className="w-4 h-4 text-[var(--foreground-tertiary)]" />;
   }
 }
 
-export default async function BlockPage() {
-  const { sprint, blocks, isLive } = await getSprintData();
+function getPriorityColor(priority: TaskPriority) {
+  switch (priority) {
+    case "Urgent":
+      return "tag-mood";
+    case "High":
+      return "tag-activity";
+    case "Medium":
+      return "tag-genre";
+    default:
+      return "tag-teal";
+  }
+}
+
+function calculateProgress(tasks: Task[]) {
+  const done = tasks.filter((t) => t.status === "Done").length;
+  return {
+    completed: done,
+    total: tasks.length,
+    percentage: tasks.length > 0 ? Math.round((done / tasks.length) * 100) : 0,
+  };
+}
+
+export default function BlockPage() {
+  const sprint = fallbackSprintData;
+  const blocks = fallbackPlannedBlocks;
+  const isLive = false;
   const progress = calculateProgress(sprint.tasks);
 
   return (
-    <div className="min-h-screen">
-      <MonochromeBackground />
+    <div className="min-h-screen bg-gradient-app relative">
+      {/* Background gradient overlay */}
+      <div className="fixed inset-0 bg-gradient-hero pointer-events-none" />
 
       {/* Navigation */}
-      <nav className="sticky top-0 z-50 bg-[var(--color-background)] border-b-2 border-[var(--color-border)]">
-        <div className="max-w-6xl mx-auto px-6 md:px-8 lg:px-12">
-          <div className="flex items-center justify-between h-20">
-            {/* Back to Home */}
-            <Link href="/" className="flex items-center gap-3 group">
-              <div className="w-10 h-10 border-2 border-[var(--color-border)] overflow-hidden">
+      <nav className="sticky top-0 z-50 glass border-b border-[var(--border-default)]">
+        <div className="container-app">
+          <div className="flex items-center justify-between h-16">
+            {/* Logo */}
+            <Link href="/" className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl overflow-hidden">
                 <Image
                   src="/chunes-icon.png"
                   alt="Chunes"
@@ -169,164 +212,214 @@ export default async function BlockPage() {
                   className="w-full h-full object-cover"
                 />
               </div>
-              <span
-                className="text-2xl tracking-tight"
-                style={{ fontFamily: "var(--font-display)", fontWeight: 700 }}
-              >
-                Chunes
-              </span>
+              <span className="text-xl font-bold">Chunes</span>
             </Link>
 
-            {/* Page Title & Status */}
+            {/* Status Badge */}
             <div className="hidden md:flex items-center gap-3">
-              <Badge variant="default" size="sm">
-                Development Tracker
-              </Badge>
+              <span className="pill pill-primary text-sm">Development Tracker</span>
               {isLive ? (
-                <Badge variant="accent" size="sm">
-                  <RefreshCw className="w-3 h-3 mr-1" strokeWidth={1.5} />
+                <span className="pill pill-pink text-sm">
+                  <RefreshCw className="w-3 h-3 mr-1" />
                   Live
-                </Badge>
+                </span>
               ) : (
-                <Badge variant="muted" size="sm">
-                  Static Data
-                </Badge>
+                <span className="text-xs text-[var(--foreground-tertiary)]">Static Data</span>
               )}
             </div>
 
-            {/* Right Actions */}
-            <div className="flex items-center gap-4">
-              <ThemeToggle />
-              <Link href="/">
-                <Button variant="outline" size="sm">
-                  <ArrowLeft className="w-4 h-4" strokeWidth={1.5} />
-                  Back
-                </Button>
-              </Link>
-            </div>
+            {/* Back Button */}
+            <Link href="/" className="btn btn-outline btn-sm">
+              <ArrowLeft className="w-4 h-4" />
+              <span>Back</span>
+            </Link>
           </div>
         </div>
       </nav>
 
       {/* Main Content */}
-      <main className="max-w-6xl mx-auto px-6 md:px-8 lg:px-12 py-16 relative z-10">
+      <main className="container-app py-12 md:py-16 relative z-10">
         {/* Sprint Hero */}
         <section className="mb-16">
-          <SprintHero sprint={sprint} progress={progress} />
-        </section>
+          <div className="card p-8 md:p-12">
+            <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8">
+              <div className="flex-1">
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="tag-pill tag-genre">Block {sprint.blockNumber}</span>
+                  <span className="text-sm text-[var(--foreground-tertiary)]">{sprint.blockLabel}</span>
+                </div>
+                <h1 className="mb-4">
+                  <span className="gradient-text">{sprint.theme}</span>
+                </h1>
+                <p className="text-lg text-[var(--foreground-secondary)] mb-6 leading-relaxed">
+                  {sprint.goal}
+                </p>
+                <div className="flex flex-wrap gap-4 text-sm text-[var(--foreground-secondary)]">
+                  <span>{sprint.startDate} - {sprint.endDate}</span>
+                  <span className="text-[var(--accent-primary)]">{sprint.status}</span>
+                </div>
+              </div>
 
-        <hr className="rule-separator mb-16" />
+              {/* Progress */}
+              <div className="lg:w-64">
+                <div className="card p-6 bg-[var(--background-secondary)]">
+                  <div className="text-center mb-4">
+                    <div className="text-4xl font-bold gradient-text">{progress.percentage}%</div>
+                    <div className="text-sm text-[var(--foreground-secondary)]">Complete</div>
+                  </div>
+                  <div className="h-2 bg-[var(--background)] rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-gradient-to-r from-[var(--accent-primary)] to-[var(--accent-secondary)] rounded-full transition-all duration-500"
+                      style={{ width: `${progress.percentage}%` }}
+                    />
+                  </div>
+                  <div className="text-center mt-2 text-sm text-[var(--foreground-tertiary)]">
+                    {progress.completed} / {progress.total} tasks
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
         {/* Tasks Section */}
         <section className="mb-16">
           <div className="flex items-center justify-between mb-8">
-            <h2
-              className="text-4xl md:text-5xl tracking-tighter"
-              style={{ fontFamily: "var(--font-display)", fontWeight: 900 }}
-            >
-              Sprint Tasks
+            <h2>
+              Sprint <span className="gradient-text">Tasks</span>
             </h2>
-            <Badge variant="accent" size="md">
-              Block {sprint.blockNumber}
-            </Badge>
+            <span className="tag-pill tag-genre">Block {sprint.blockNumber}</span>
           </div>
-          <TaskBoard tasks={sprint.tasks} />
+
+          <div className="grid gap-4">
+            {sprint.tasks.map((task) => (
+              <Link
+                key={task.id}
+                href={`/block/task/${task.id}`}
+                className="card-interactive p-4 md:p-6 flex items-center gap-4 group"
+              >
+                {getStatusIcon(task.status)}
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="text-xs text-[var(--foreground-tertiary)] font-mono group-hover:text-[var(--accent-primary)] transition-colors">
+                      {task.id}
+                    </span>
+                  </div>
+                  <h3 className="font-semibold truncate">{task.title}</h3>
+                </div>
+                <span className={`tag-pill ${getPriorityColor(task.priority)} text-xs`}>
+                  {task.priority}
+                </span>
+              </Link>
+            ))}
+          </div>
         </section>
 
         {/* Daily Log */}
         {sprint.dailyLog.length > 0 && (
-          <>
-            <hr className="rule-separator mb-16" />
-            <section className="mb-16">
-              <h2
-                className="text-4xl md:text-5xl tracking-tighter mb-8"
-                style={{ fontFamily: "var(--font-display)", fontWeight: 900 }}
-              >
-                Daily Log
-              </h2>
-              <div className="grid md:grid-cols-3 gap-0 border-t-2 border-l-2 border-[var(--color-border)]">
-                {sprint.dailyLog.map((day) => (
-                  <div
-                    key={day.day}
-                    className="border-r-2 border-b-2 border-[var(--color-border)] p-6"
-                  >
-                    <div className="flex items-center justify-between mb-6">
-                      <span
-                        className="text-3xl tracking-tighter"
-                        style={{ fontFamily: "var(--font-display)", fontWeight: 900 }}
-                      >
-                        Day {day.day}
-                      </span>
-                      <span className="text-xs uppercase tracking-[0.1em]" style={{ fontFamily: "var(--font-mono)" }}>
-                        {day.date}
-                      </span>
-                    </div>
-                    <div className="space-y-4">
-                      <div>
-                        <span className="text-xs uppercase tracking-[0.1em] mb-1 block" style={{ fontFamily: "var(--font-mono)" }}>
-                          Standup
-                        </span>
-                        <p className="text-sm" style={{ fontFamily: "var(--font-body)" }}>
-                          {day.morningStandup === "-" ? "—" : day.morningStandup}
-                        </p>
-                      </div>
-                      <div>
-                        <span className="text-xs uppercase tracking-[0.1em] mb-1 block" style={{ fontFamily: "var(--font-mono)" }}>
-                          EOD Summary
-                        </span>
-                        <p className="text-sm" style={{ fontFamily: "var(--font-body)" }}>
-                          {day.eodSummary === "-" ? "—" : day.eodSummary}
-                        </p>
-                      </div>
-                      {day.buildSubmitted && (
-                        <div>
-                          <span className="text-xs uppercase tracking-[0.1em] mb-1 block" style={{ fontFamily: "var(--font-mono)" }}>
-                            Build
-                          </span>
-                          <p className="text-sm" style={{ fontFamily: "var(--font-body)" }}>
-                            {day.buildSubmitted === "-" ? "—" : day.buildSubmitted}
-                          </p>
-                        </div>
-                      )}
-                    </div>
+          <section className="mb-16">
+            <h2 className="mb-8">
+              Daily <span className="gradient-text">Log</span>
+            </h2>
+            <div className="grid md:grid-cols-3 gap-4">
+              {sprint.dailyLog.map((day) => (
+                <div key={day.day} className="card p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="text-2xl font-bold">Day {day.day}</span>
+                    <span className="text-xs text-[var(--foreground-tertiary)]">{day.date}</span>
                   </div>
-                ))}
-              </div>
-            </section>
-          </>
+                  <div className="space-y-3 text-sm">
+                    <div>
+                      <span className="text-xs text-[var(--foreground-tertiary)] uppercase tracking-wider block mb-1">Standup</span>
+                      <p className="text-[var(--foreground-secondary)]">
+                        {day.morningStandup === "-" ? "—" : day.morningStandup}
+                      </p>
+                    </div>
+                    <div>
+                      <span className="text-xs text-[var(--foreground-tertiary)] uppercase tracking-wider block mb-1">EOD Summary</span>
+                      <p className="text-[var(--foreground-secondary)]">
+                        {day.eodSummary === "-" ? "—" : day.eodSummary}
+                      </p>
+                    </div>
+                    {day.buildSubmitted && (
+                      <div>
+                        <span className="text-xs text-[var(--foreground-tertiary)] uppercase tracking-wider block mb-1">Build</span>
+                        <p className="text-[var(--foreground-secondary)]">
+                          {day.buildSubmitted === "-" ? "—" : day.buildSubmitted}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
         )}
 
-        <hr className="rule-separator mb-16" />
-
         {/* Sprint Timeline */}
-        <SprintTimeline
-          blocks={blocks}
-          currentBlockNumber={sprint.blockNumber}
-          currentTasks={sprint.tasks}
-        />
+        <section className="mb-16">
+          <h2 className="mb-8">
+            Sprint <span className="gradient-text">Timeline</span>
+          </h2>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {blocks.map((block) => {
+              const isCurrent = block.number === sprint.blockNumber;
+              const blockProgress = calculateProgress(block.tasks);
+              return (
+                <div
+                  key={block.number}
+                  className={`card p-6 ${isCurrent ? "ring-2 ring-[var(--accent-primary)]" : ""}`}
+                >
+                  {isCurrent && (
+                    <span className="tag-pill tag-mood text-xs mb-4 inline-block">Current</span>
+                  )}
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-2xl font-bold">{String(block.number).padStart(2, "0")}</span>
+                    <span className="text-sm italic text-[var(--foreground-tertiary)]">{block.name}</span>
+                  </div>
+                  <h3 className="font-semibold mb-2">{block.focus}</h3>
+                  <p className="text-xs text-[var(--foreground-tertiary)] mb-3">{block.dates}</p>
+                  <div className="h-1.5 bg-[var(--background)] rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-gradient-to-r from-[var(--accent-primary)] to-[var(--accent-secondary)] rounded-full"
+                      style={{ width: `${blockProgress.percentage}%` }}
+                    />
+                  </div>
+                  <div className="text-xs text-[var(--foreground-tertiary)] mt-1">
+                    {blockProgress.completed}/{blockProgress.total} tasks
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </section>
 
         {/* Linear Link */}
-        <section className="text-center py-16 mt-16 border-2 border-[var(--color-border)]">
-          <p className="text-lg mb-6" style={{ fontFamily: "var(--font-body)" }}>
-            Want to see more details?
-          </p>
-          <a
-            href="https://linear.app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Button variant="primary" size="lg">
-              View in Linear
-              <ExternalLink className="w-4 h-4" strokeWidth={1.5} />
-            </Button>
-          </a>
+        <section className="text-center">
+          <div className="card p-8 md:p-12 relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-hero opacity-50" />
+            <div className="relative z-10">
+              <p className="text-lg text-[var(--foreground-secondary)] mb-6">
+                Want to see more details?
+              </p>
+              <a
+                href="https://linear.app"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-primary btn-lg inline-flex items-center"
+              >
+                <span>View in Linear</span>
+                <ExternalLink className="w-4 h-4 ml-2" />
+              </a>
+            </div>
+          </div>
         </section>
       </main>
 
       {/* Footer */}
-      <footer className="py-12 border-t-2 border-[var(--color-border)] relative z-10">
-        <div className="max-w-6xl mx-auto px-6 text-center">
-          <p className="text-sm uppercase tracking-[0.1em]" style={{ fontFamily: "var(--font-mono)" }}>
+      <footer className="border-t border-[var(--border-default)] py-8 relative z-10">
+        <div className="container-app text-center">
+          <p className="text-sm text-[var(--foreground-tertiary)]">
             Building Chunes in public • 6 Blocks • 18 Days
           </p>
         </div>

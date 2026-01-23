@@ -1,31 +1,20 @@
-import type { Metadata } from "next";
-import { Playfair_Display, Source_Serif_4, JetBrains_Mono } from "next/font/google";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
-const playfairDisplay = Playfair_Display({
-  subsets: ["latin"],
-  weight: ["400", "700", "900"],
-  style: ["normal", "italic"],
-  variable: "--font-display",
-});
-
-const sourceSerif4 = Source_Serif_4({
-  subsets: ["latin"],
-  weight: ["400", "600", "700"],
-  style: ["normal", "italic"],
-  variable: "--font-body",
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500"],
-  variable: "--font-mono",
-});
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: [
+    { media: "(prefers-color-scheme: dark)", color: "#0a0a0f" },
+    { media: "(prefers-color-scheme: light)", color: "#faf9f7" },
+  ],
+};
 
 export const metadata: Metadata = {
   title: "Chunes - Organize Your Music, Your Way",
   description:
-    "The ultimate iOS app for music lovers who want control. Tag, filter, and navigate your music library like never before.",
+    "The ultimate iOS app for music lovers who want control. AI-powered tagging, smart mixes, instant replay markers, and seamless Apple Music integration.",
   keywords: [
     "music app",
     "iOS",
@@ -33,23 +22,33 @@ export const metadata: Metadata = {
     "music organization",
     "tagging",
     "playlist",
+    "smart mixes",
+    "markers",
   ],
   authors: [{ name: "Chunes" }],
   openGraph: {
     title: "Chunes - Organize Your Music, Your Way",
     description:
-      "The ultimate iOS app for music lovers who want control. Tag, filter, and navigate your music library like never before.",
-    type: "website",
+      "The ultimate iOS app for music lovers who want control. AI-powered tagging, smart mixes, instant replay markers, and seamless Apple Music integration.",
+    url: "https://getchunes.app",
+    siteName: "Chunes",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Chunes App",
+      },
+    ],
     locale: "en_US",
+    type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: "Chunes - Organize Your Music, Your Way",
     description:
       "The ultimate iOS app for music lovers who want control.",
-  },
-  other: {
-    "color-scheme": "dark light",
+    images: ["/og-image.png"],
   },
 };
 
@@ -60,9 +59,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${playfairDisplay.variable} ${sourceSerif4.variable} ${jetbrainsMono.variable} font-body antialiased`}>
-        {children}
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

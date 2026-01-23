@@ -1,128 +1,257 @@
+"use client";
+
 import Image from "next/image";
-import Link from "next/link";
 import {
-  Music,
   Tags,
-  Filter,
+  Sparkles,
+  ListMusic,
   Timer,
-  Download,
+  Music4,
   ArrowRight,
-  Zap,
-  Headphones,
-  Clock,
-  BarChart3,
-  Heart,
+  Repeat,
+  SlidersHorizontal,
+  ArrowUpDown,
+  Dumbbell,
+  Guitar,
 } from "lucide-react";
-import { MonochromeBackground } from "@/components/backgrounds";
-import { Button } from "@/components/ui/Button";
-import { Card, CardContent } from "@/components/ui/Card";
-import { Badge } from "@/components/ui/Badge";
-import { ThemeToggle } from "@/components/ThemeToggle";
 
-// Sprint/Block data
-const blocks = [
-  {
-    number: 1,
-    name: "Bach",
-    theme: "Foundation & Core Playback",
-    dates: "Jan 11-13",
-    status: "current",
-  },
-  {
-    number: 2,
-    name: "Miles",
-    theme: "Tagging System Core",
-    dates: "Jan 14-16",
-    status: "upcoming",
-  },
-  {
-    number: 3,
-    name: "Jimi",
-    theme: "Markers & Moments",
-    dates: "Jan 17-19",
-    status: "upcoming",
-  },
-  {
-    number: 4,
-    name: "Ella",
-    theme: "Filtering & Discovery",
-    dates: "Jan 20-22",
-    status: "upcoming",
-  },
-  {
-    number: 5,
-    name: "Duke",
-    theme: "Import & Export",
-    dates: "Jan 23-25",
-    status: "upcoming",
-  },
-  {
-    number: 6,
-    name: "Nina",
-    theme: "Polish & Launch",
-    dates: "Jan 26-28",
-    status: "upcoming",
-  },
-];
+/* ============================================
+   iPhone 17 Pro Max Frame Component
+   ============================================ */
+function IPhoneFrame({
+  children,
+  className = "",
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <div className={`iphone-device ${className}`}>
+      {/* Left buttons */}
+      <div
+        className="iphone-button iphone-button-left"
+        style={{ top: "120px", height: "35px" }}
+      />
+      <div
+        className="iphone-button iphone-button-left"
+        style={{ top: "175px", height: "60px" }}
+      />
+      <div
+        className="iphone-button iphone-button-left"
+        style={{ top: "250px", height: "60px" }}
+      />
 
-const features = [
-  {
-    icon: Tags,
-    title: "Smart Tagging",
-    description:
-      "Organize with 22+ mood tags, activity tags, genres, and custom labels. Every song, perfectly categorized.",
-  },
-  {
-    icon: Filter,
-    title: "Powerful Filters",
-    description:
-      "Find exactly what you want. Filter by mood, vocals, artist, duration, release date, and more.",
-  },
-  {
-    icon: Timer,
-    title: "Song Markers",
-    description:
-      "Mark your favorite moments. Jump instantly to verses, choruses, or that perfect drop.",
-  },
-  {
-    icon: BarChart3,
-    title: "Deep Stats",
-    description:
-      "Track play counts, skip history, and discover forgotten favorites in your library.",
-  },
-  {
-    icon: Music,
-    title: "Apple Music Native",
-    description:
-      "Built for iOS. Works seamlessly with your existing Apple Music library and metadata.",
-  },
-  {
-    icon: Download,
-    title: "Your Data, Your Way",
-    description:
-      "Export your entire music organization. Import, backup, and take control of your data.",
-  },
-];
+      {/* Right button (power) */}
+      <div
+        className="iphone-button iphone-button-right"
+        style={{ top: "180px", height: "80px" }}
+      />
 
-const stats = [
-  { value: "22+", label: "Mood Tags", icon: Heart },
-  { value: "100+", label: "Genres", icon: Music },
-  { value: "∞", label: "Markers", icon: Timer },
-  { value: "100%", label: "Your Data", icon: Download },
-];
+      {/* Outer frame */}
+      <div className="iphone-outer-frame">
+        {/* Inner frame */}
+        <div className="iphone-inner-frame">
+          {/* Screen */}
+          <div className="relative bg-black rounded-[49px] overflow-hidden">
+            {/* Dynamic Island */}
+            <div className="absolute top-3 left-1/2 -translate-x-1/2 z-20">
+              <div className="w-[120px] h-[35px] bg-black rounded-full flex items-center justify-center">
+                <div className="w-3 h-3 rounded-full bg-[#1a1a1a] mr-2" />
+              </div>
+            </div>
 
+            {/* Screen content */}
+            {children}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ============================================
+   App Screenshot Component
+   ============================================ */
+function AppScreenshot({
+  darkSrc,
+  lightSrc,
+  alt,
+}: {
+  darkSrc: string;
+  lightSrc?: string;
+  alt: string;
+}) {
+  return (
+    <picture>
+      {lightSrc && (
+        <source media="(prefers-color-scheme: light)" srcSet={lightSrc} />
+      )}
+      <source media="(prefers-color-scheme: dark)" srcSet={darkSrc} />
+      <img
+        src={darkSrc}
+        alt={alt}
+        className="w-full h-full object-cover"
+        style={{ aspectRatio: "393/852" }}
+      />
+    </picture>
+  );
+}
+
+/* ============================================
+   Feature Card Component
+   ============================================ */
+function FeatureCard({
+  icon: Icon,
+  title,
+  description,
+  color,
+  targetId,
+}: {
+  icon: React.ElementType;
+  title: string;
+  description: string;
+  color: "purple" | "pink" | "orange" | "gold" | "teal";
+  targetId?: string;
+}) {
+  const colorClasses = {
+    purple: "feature-icon-purple",
+    pink: "feature-icon-pink",
+    orange: "feature-icon-orange",
+    gold: "feature-icon-gold",
+    teal: "feature-icon-teal",
+  };
+
+  const handleClick = () => {
+    if (targetId) {
+      document.getElementById(targetId)?.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  return (
+    <div
+      className={`card-interactive p-6 ${targetId ? "cursor-pointer" : ""}`}
+      onClick={targetId ? handleClick : undefined}
+    >
+      <div className={`feature-icon ${colorClasses[color]} mb-4`}>
+        <Icon className="w-6 h-6" strokeWidth={2} />
+      </div>
+      <h3 className="text-xl font-bold mb-2">{title}</h3>
+      <p className="text-[var(--foreground-secondary)] text-base leading-relaxed">
+        {description}
+      </p>
+    </div>
+  );
+}
+
+/* ============================================
+   Feature Section Component
+   ============================================ */
+function FeatureSection({
+  id,
+  title,
+  description,
+  features,
+  screenshotDark,
+  screenshotLight,
+  reverse = false,
+}: {
+  id: string;
+  title: string;
+  description: string;
+  features: { icon: React.ElementType; text: string }[];
+  screenshotDark: string;
+  screenshotLight?: string;
+  reverse?: boolean;
+}) {
+  return (
+    <section id={id} className="section-padding">
+      <div className="container-app">
+        <div
+          className={`flex flex-col ${
+            reverse ? "lg:flex-row-reverse" : "lg:flex-row"
+          } items-center gap-12 lg:gap-20`}
+        >
+          {/* Text Content */}
+          <div className="flex-1 max-w-xl">
+            <h2 className="mb-6 gradient-text">{title}</h2>
+            <p className="text-lg text-[var(--foreground-secondary)] mb-8 leading-relaxed">
+              {description}
+            </p>
+            <ul className="space-y-4">
+              {features.map((feature, index) => (
+                <li key={index} className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-xl bg-[var(--accent-primary)] bg-opacity-20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <feature.icon
+                      className="w-5 h-5 text-[var(--accent-primary)]"
+                      strokeWidth={2}
+                    />
+                  </div>
+                  <span className="text-lg">{feature.text}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Phone Mockup */}
+          <div className="flex-shrink-0">
+            <IPhoneFrame className="w-[230px] sm:w-[260px] md:w-[300px] lg:w-[340px] xl:w-[380px]">
+              <AppScreenshot
+                darkSrc={screenshotDark}
+                lightSrc={screenshotLight}
+                alt={title}
+              />
+            </IPhoneFrame>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ============================================
+   Tag Pill Component
+   ============================================ */
+function TagPill({
+  emoji,
+  label,
+  type,
+}: {
+  emoji?: string;
+  label: string;
+  type: "genre" | "mood" | "activity" | "instrument" | "teal";
+}) {
+  const typeClasses = {
+    genre: "tag-genre",
+    mood: "tag-mood",
+    activity: "tag-activity",
+    instrument: "tag-instrument",
+    teal: "tag-teal",
+  };
+
+  return (
+    <span className={`tag-pill ${typeClasses[type]}`}>
+      {emoji && <span>{emoji}</span>}
+      <span>{label}</span>
+    </span>
+  );
+}
+
+/* ============================================
+   Main Page Component
+   ============================================ */
 export default function HomePage() {
   return (
-    <div className="min-h-screen">
-      <MonochromeBackground />
+    <div className="min-h-screen bg-gradient-app relative overflow-hidden">
+      {/* Background gradient overlay */}
+      <div className="fixed inset-0 bg-gradient-hero pointer-events-none" />
 
       {/* Navigation */}
-      <nav className="sticky top-0 z-50 bg-[var(--color-background)] border-b-2 border-[var(--color-border)]">
-        <div className="max-w-6xl mx-auto px-6 md:px-8 lg:px-12">
-          <div className="flex items-center justify-between h-20">
+      <nav className="sticky top-0 z-50 glass border-b border-[var(--border-default)]">
+        <div className="container-app">
+          <div className="flex items-center justify-between h-16">
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-3 group">
-              <div className="w-10 h-10 border-2 border-[var(--color-border)] overflow-hidden">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl overflow-hidden">
                 <Image
                   src="/chunes-icon.png"
                   alt="Chunes"
@@ -131,362 +260,318 @@ export default function HomePage() {
                   className="w-full h-full object-cover"
                 />
               </div>
-              <span
-                className="text-2xl tracking-tight text-[var(--color-foreground)]"
-                style={{ fontFamily: "var(--font-display)", fontWeight: 700 }}
-              >
-                Chunes
-              </span>
-            </Link>
-
-            {/* Nav Links - Desktop */}
-            <div className="hidden md:flex items-center gap-8">
-              <Link
-                href="#features"
-                className="text-sm uppercase tracking-[0.1em] text-[var(--color-foreground)] hover:border-b-2 hover:border-[var(--color-foreground)] pb-1 transition-none font-medium"
-                style={{ fontFamily: "var(--font-mono)" }}
-              >
-                Features
-              </Link>
-              <Link
-                href="#roadmap"
-                className="text-sm uppercase tracking-[0.1em] text-[var(--color-foreground)] hover:border-b-2 hover:border-[var(--color-foreground)] pb-1 transition-none font-medium"
-                style={{ fontFamily: "var(--font-mono)" }}
-              >
-                Roadmap
-              </Link>
-              <Link
-                href="/block"
-                className="text-sm uppercase tracking-[0.1em] text-[var(--color-foreground)] hover:border-b-2 hover:border-[var(--color-foreground)] pb-1 transition-none font-medium"
-                style={{ fontFamily: "var(--font-mono)" }}
-              >
-                Development
-              </Link>
+              <span className="text-xl font-bold">Chunes</span>
             </div>
 
-            {/* Right Actions */}
-            <div className="flex items-center gap-4">
-              <ThemeToggle />
-              <Button variant="primary" size="sm">
-                <span className="hidden sm:inline">Join Beta</span>
-                <span className="sm:hidden">Beta</span>
-                <ArrowRight className="w-4 h-4" strokeWidth={1.5} />
-              </Button>
-            </div>
+            {/* CTA */}
+            <a
+              href="https://testflight.apple.com/join/chunes"
+              className="btn btn-primary btn-sm"
+            >
+              <span>Join Beta</span>
+              <ArrowRight className="w-4 h-4 flex-shrink-0" />
+            </a>
           </div>
         </div>
       </nav>
 
       {/* Hero Section */}
-      <section className="relative py-24 md:py-32 lg:py-40 texture-lines">
-        <div className="max-w-6xl mx-auto px-6 md:px-8 lg:px-12">
-          <div className="max-w-5xl">
-            {/* Decorative element */}
-            <div className="flex items-center gap-4 mb-8">
-              <div className="w-3 h-3 border-2 border-[var(--color-border)]" />
-              <div className="h-px flex-1 bg-[var(--color-border)]" />
-            </div>
-
-            {/* Badge */}
-            <div className="mb-8">
-              <Badge variant="accent" size="md">
-                For Music Lovers
-              </Badge>
-            </div>
-
-            {/* Oversized Headline */}
-            <h1
-              className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl leading-none tracking-tighter mb-12"
-              style={{ fontFamily: "var(--font-display)", fontWeight: 900 }}
-            >
-              <span className="block">Organize</span>
-              <span className="block italic">Your Music</span>
-              <span className="block">Your Way</span>
-            </h1>
-
-            {/* Tagline */}
-            <p className="text-xl md:text-2xl leading-relaxed mb-12 max-w-2xl" style={{ fontFamily: "var(--font-body)" }}>
-              The ultimate iOS app for music lovers who want control. Tag,
-              filter, and navigate your library like never before.
-            </p>
-
-            {/* CTAs */}
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Button variant="primary" size="lg">
-                Join TestFlight
-                <ArrowRight className="w-4 h-4" strokeWidth={1.5} />
-              </Button>
-              <Link href="/block">
-                <Button variant="outline" size="lg">
-                  Track Development
-                </Button>
-              </Link>
-            </div>
-
-            {/* Decorative bottom element */}
-            <div className="flex items-center gap-4 mt-16">
-              <div className="h-px flex-1 bg-[var(--color-border)]" />
-              <div className="w-3 h-3 border-2 border-[var(--color-border)]" />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Section divider */}
-      <hr className="rule-separator" />
-
-      {/* Stats Section - Inverted */}
-      <section className="inverted py-24 md:py-32 texture-lines-inverted relative">
-        <div className="max-w-6xl mx-auto px-6 md:px-8 lg:px-12">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
-            {stats.map((stat) => (
-              <div key={stat.label} className="text-center">
-                <div className="w-16 h-16 mx-auto mb-6 border-2 border-[var(--color-accent-foreground)] flex items-center justify-center">
-                  <stat.icon className="w-8 h-8" strokeWidth={1.5} />
-                </div>
-                <div
-                  className="text-5xl md:text-6xl mb-2 tracking-tighter"
-                  style={{ fontFamily: "var(--font-display)", fontWeight: 900 }}
-                >
-                  {stat.value}
-                </div>
-                <div className="text-sm uppercase tracking-[0.1em]" style={{ fontFamily: "var(--font-mono)" }}>
-                  {stat.label}
-                </div>
+      <section className="relative pt-16 pb-8 md:pt-24 md:pb-16">
+        <div className="container-app">
+          <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
+            {/* Hero Text */}
+            <div className="flex-1 text-center lg:text-left">
+              {/* Badge */}
+              <div className="mb-6">
+                <span className="pill pill-primary">
+                  <Sparkles className="w-4 h-4 mr-2" />
+                  AI-Powered Music Organization
+                </span>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* Section divider */}
-      <hr className="rule-separator" />
+              {/* Headline */}
+              <h1 className="mb-6">
+                <span className="block">Organize</span>
+                <span className="block gradient-text">Your Music</span>
+                <span className="block">Your Way</span>
+              </h1>
 
-      {/* Features Section */}
-      <section id="features" className="py-24 md:py-32 lg:py-40 texture-grid">
-        <div className="max-w-6xl mx-auto px-6 md:px-8 lg:px-12">
-          {/* Section Header */}
-          <div className="mb-16">
-            <Badge variant="accent" size="md" className="mb-6">
-              Features
-            </Badge>
-            <h2
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl tracking-tighter mb-6"
-              style={{ fontFamily: "var(--font-display)", fontWeight: 900 }}
-            >
-              Everything You Need
-            </h2>
-            <p className="text-xl leading-relaxed max-w-2xl" style={{ fontFamily: "var(--font-body)" }}>
-              Built for power users who want complete control over their music library.
-            </p>
-          </div>
+              {/* Subheadline */}
+              <p className="text-xl text-[var(--foreground-secondary)] mb-8 max-w-lg mx-auto lg:mx-0 leading-relaxed">
+                Smart tags, powerful mixes, instant replay markers, and seamless
+                Apple Music integration. Finally, a music app that thinks like
+                you do.
+              </p>
 
-          {/* Features Grid */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-0 border-t-2 border-l-2 border-[var(--color-border)]">
-            {features.map((feature) => (
-              <Card
-                key={feature.title}
-                variant="border"
-                hoverable
-                className="border-l-0 border-t-0 border-r-2 border-b-2 group-hover:border-0"
-              >
-                <CardContent className="p-8">
-                  <div className="w-12 h-12 border-2 border-[var(--color-border)] flex items-center justify-center mb-6 group-hover:border-[var(--color-accent-foreground)] transition-colors duration-100">
-                    <feature.icon className="w-6 h-6" strokeWidth={1.5} />
-                  </div>
-                  <h3
-                    className="text-2xl mb-3 tracking-tight"
-                    style={{ fontFamily: "var(--font-display)", fontWeight: 700 }}
-                  >
-                    {feature.title}
-                  </h3>
-                  <p className="text-base leading-relaxed" style={{ fontFamily: "var(--font-body)" }}>
-                    {feature.description}
-                  </p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Section divider */}
-      <hr className="rule-separator" />
-
-      {/* Roadmap Section */}
-      <section id="roadmap" className="py-24 md:py-32 lg:py-40">
-        <div className="max-w-6xl mx-auto px-6 md:px-8 lg:px-12">
-          {/* Section Header */}
-          <div className="mb-16">
-            <Badge variant="default" size="md" className="mb-6">
-              Development
-            </Badge>
-            <h2
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl tracking-tighter mb-6"
-              style={{ fontFamily: "var(--font-display)", fontWeight: 900 }}
-            >
-              The Roadmap
-            </h2>
-            <p className="text-xl leading-relaxed max-w-2xl" style={{ fontFamily: "var(--font-body)" }}>
-              Building Chunes in public. Six blocks. 18 days. One mission.
-            </p>
-          </div>
-
-          {/* Blocks Timeline */}
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-0 border-t-2 border-l-2 border-[var(--color-border)]">
-            {blocks.map((block) => {
-              const isCurrent = block.status === "current";
-              return (
-                <Card
-                  key={block.number}
-                  variant={isCurrent ? "inverted" : "border"}
-                  hoverable
-                  className={`relative border-l-0 border-t-0 border-r-2 border-b-2 ${isCurrent ? "border-0" : ""}`}
+              {/* CTAs */}
+              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                <a
+                  href="https://testflight.apple.com/join/chunes"
+                  className="btn btn-primary btn-lg inline-flex items-center"
                 >
-                  {isCurrent && (
-                    <Badge
-                      variant="accent"
-                      size="sm"
-                      className="absolute -top-3 -right-3 z-10 bg-[var(--color-background)] text-[var(--color-foreground)] border border-[var(--color-border)]"
-                    >
-                      Live
-                    </Badge>
-                  )}
-                  <CardContent className="p-8">
-                    <div className="flex items-center justify-between mb-6">
-                      <div
-                        className={`w-12 h-12 border-2 flex items-center justify-center text-xl ${
-                          isCurrent
-                            ? "border-[var(--color-accent-foreground)]"
-                            : "border-[var(--color-border)]"
-                        }`}
-                        style={{ fontFamily: "var(--font-mono)", fontWeight: 500 }}
-                      >
-                        {block.number.toString().padStart(2, "0")}
-                      </div>
-                      <span
-                        className="text-sm uppercase tracking-[0.1em] italic"
-                        style={{ fontFamily: "var(--font-display)" }}
-                      >
-                        {block.name}
-                      </span>
-                    </div>
-                    <h3
-                      className="text-xl mb-2 tracking-tight"
-                      style={{ fontFamily: "var(--font-display)", fontWeight: 700 }}
-                    >
-                      {block.theme}
-                    </h3>
-                    <p className="text-sm uppercase tracking-[0.1em]" style={{ fontFamily: "var(--font-mono)" }}>
-                      {block.dates}, 2026
-                    </p>
-                  </CardContent>
-                </Card>
-              );
-            })}
-          </div>
+                  <svg
+                    className="w-5 h-5 mr-2 flex-shrink-0"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
+                  </svg>
+                  <span>Join TestFlight</span>
+                </a>
+                <a href="#features" className="btn btn-outline btn-lg">
+                  Learn More
+                </a>
+              </div>
+            </div>
 
-          {/* View Details CTA */}
-          <div className="mt-12">
-            <Link href="/block">
-              <Button variant="outline" size="lg">
-                View Current Sprint
-                <ArrowRight className="w-4 h-4" strokeWidth={1.5} />
-              </Button>
-            </Link>
+            {/* Hero Phone */}
+            <div className="flex-shrink-0">
+              <IPhoneFrame className="w-[260px] sm:w-[300px] md:w-[340px] lg:w-[380px] xl:w-[420px] animate-float">
+                <AppScreenshot
+                  darkSrc="/screenshots/player-dark.png"
+                  alt="Chunes Player"
+                />
+              </IPhoneFrame>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Section divider */}
-      <hr className="rule-separator" />
+      {/* Feature Pills - Floating Tags */}
+      <section className="py-8 md:py-12">
+        <div className="container-app">
+          <div className="flex flex-wrap justify-center gap-3">
+            <TagPill emoji="🎸" label="Rock" type="genre" />
+            <TagPill emoji="💪" label="Workout" type="activity" />
+            <TagPill emoji="😌" label="Chill" type="mood" />
+            <TagPill emoji="🎹" label="Piano" type="instrument" />
+            <TagPill emoji="🔥" label="Energetic" type="mood" />
+            <TagPill emoji="🎷" label="Jazz" type="genre" />
+            <TagPill emoji="🚗" label="Road Trip" type="activity" />
+            <TagPill emoji="🎻" label="Violin" type="instrument" />
+          </div>
+        </div>
+      </section>
+
+      {/* Features Grid */}
+      <section id="features" className="section-padding">
+        <div className="container-app">
+          <div className="text-center mb-12">
+            <h2 className="mb-4">
+              Everything You <span className="gradient-text">Need</span>
+            </h2>
+            <p className="text-xl text-[var(--foreground-secondary)] max-w-2xl mx-auto">
+              Built for power users who want complete control over their music
+              library.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <FeatureCard
+              icon={Tags}
+              title="Smart Tags"
+              description="100+ moods, 50+ activities, 1,300+ genres, 100+ instruments. AI-powered suggestions."
+              color="purple"
+              targetId="tags-section"
+            />
+            <FeatureCard
+              icon={ListMusic}
+              title="Custom Mixes"
+              description="Save your perfect filter combinations. Filter by anything, sort by everything."
+              color="pink"
+              targetId="mixes-section"
+            />
+            <FeatureCard
+              icon={Timer}
+              title="Markers"
+              description="Jump to any moment. Practice solos with instant replay buffers."
+              color="orange"
+              targetId="markers-section"
+            />
+            <FeatureCard
+              icon={Music4}
+              title="Apple Music"
+              description="Built natively for iOS. Works seamlessly with your existing library."
+              color="teal"
+              targetId="apple-music-section"
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Smart Tags Section */}
+      <FeatureSection
+        id="tags-section"
+        title="AI-Powered Smart Tags"
+        description="Categorize your music the way you think about it. With over 100 moods, 50 activities, 1,300 genres, and 100 instruments, you'll always find the perfect tag. Our AI analyzes your songs and suggests tags automatically."
+        features={[
+          {
+            icon: Sparkles,
+            text: "AI suggests tags based on your music",
+          },
+          {
+            icon: Tags,
+            text: "Moods like Calm, Energetic, Romantic, Dark",
+          },
+          {
+            icon: Dumbbell,
+            text: "Activities like Workout, Focus, Road Trip, Party",
+          },
+          {
+            icon: Guitar,
+            text: "Instruments like Piano, Guitar, Drums, Synth",
+          },
+        ]}
+        screenshotDark="/screenshots/tags-dark.png"
+      />
+
+      {/* Custom Mixes Section */}
+      <FeatureSection
+        id="mixes-section"
+        title="Custom Mixes"
+        description="Create the perfect playlist for any moment. Combine multiple filters to find exactly what you want. Save your favorite combinations as Mixes and access them instantly."
+        features={[
+          {
+            icon: SlidersHorizontal,
+            text: "Filter by mood, activity, genre, instrument, vocals, artist, duration, release date",
+          },
+          {
+            icon: ArrowUpDown,
+            text: "Sort by date added, release date, play count, skip count, duration, last played",
+          },
+          {
+            icon: ListMusic,
+            text: "Save any filter combination as a reusable Mix with custom icons",
+          },
+        ]}
+        screenshotDark="/screenshots/player-dark.png"
+        reverse
+      />
+
+      {/* Markers Section */}
+      <FeatureSection
+        id="markers-section"
+        title="Instant Replay Markers"
+        description="Mark your favorite moments in any song. Jump instantly to that epic drop, the perfect verse, or the solo you want to practice. With configurable buffer playback, you can start 5, 10, or 15 seconds before the marker - perfect for warming up at the gym or nailing that guitar solo."
+        features={[
+          {
+            icon: Timer,
+            text: "Add unlimited markers to any song",
+          },
+          {
+            icon: Repeat,
+            text: "Buffer playback: hear 5-15 seconds before any marker",
+          },
+          {
+            icon: Dumbbell,
+            text: "Perfect for gym prep - get hyped with the buildup",
+          },
+          {
+            icon: Guitar,
+            text: "Practice solos - loop the lead-in until you nail it",
+          },
+        ]}
+        screenshotDark="/screenshots/player-dark.png"
+      />
+
+      {/* Apple Music Section */}
+      <FeatureSection
+        id="apple-music-section"
+        title="Native Apple Music Integration"
+        description="Chunes works seamlessly with your entire Apple Music library - including music you've imported yourself. Upload DJ mixes or sets you've collected, mark all the drops with markers, and have the perfect gym playlist ready to go."
+        features={[
+          {
+            icon: Music4,
+            text: "Works with your full library - streaming and imported tracks",
+          },
+          {
+            icon: Timer,
+            text: "Mark every drop in your DJ mixes for instant gym hype",
+          },
+          {
+            icon: Tags,
+            text: "Tags and markers sync across all your devices via iCloud",
+          },
+        ]}
+        screenshotDark="/screenshots/player-dark.png"
+        reverse
+      />
 
       {/* CTA Section */}
-      <section className="py-24 md:py-32 lg:py-40">
-        <div className="max-w-6xl mx-auto px-6 md:px-8 lg:px-12">
-          <div className="text-center">
-            <h2
-              className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tighter mb-8"
-              style={{ fontFamily: "var(--font-display)", fontWeight: 900 }}
-            >
-              Ready to Take
-              <span className="block italic">Control?</span>
-            </h2>
-            <p className="text-xl leading-relaxed mb-12 max-w-2xl mx-auto" style={{ fontFamily: "var(--font-body)" }}>
-              Join the beta and be among the first to experience a new way to organize your music.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button variant="primary" size="lg">
-                Join TestFlight
-                <ArrowRight className="w-4 h-4" strokeWidth={1.5} />
-              </Button>
-              <Link href="/block">
-                <Button variant="outline" size="lg">
-                  Follow Development
-                </Button>
-              </Link>
+      <section className="section-padding">
+        <div className="container-app">
+          <div className="card p-8 md:p-12 text-center relative overflow-hidden">
+            {/* Gradient background */}
+            <div className="absolute inset-0 bg-gradient-hero opacity-50" />
+
+            <div className="relative z-10">
+              <h2 className="mb-4">
+                Ready to Take <span className="gradient-text">Control?</span>
+              </h2>
+              <p className="text-xl text-[var(--foreground-secondary)] mb-8 max-w-xl mx-auto">
+                Join the beta and be among the first to experience a new way to
+                organize your music.
+              </p>
+              <a
+                href="https://testflight.apple.com/join/chunes"
+                className="btn btn-primary btn-lg inline-flex items-center"
+              >
+                <svg
+                  className="w-5 h-5 mr-2 flex-shrink-0"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
+                </svg>
+                <span>Join TestFlight</span>
+              </a>
             </div>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="border-t-2 border-[var(--color-border)] py-12">
-        <div className="max-w-6xl mx-auto px-6 md:px-8 lg:px-12">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-8">
+      <footer className="border-t border-[var(--border-default)] py-8">
+        <div className="container-app">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             {/* Logo */}
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 border-2 border-[var(--color-border)] overflow-hidden">
+              <div className="w-8 h-8 rounded-lg overflow-hidden">
                 <Image
                   src="/chunes-icon.png"
                   alt="Chunes"
-                  width={40}
-                  height={40}
+                  width={32}
+                  height={32}
                   className="w-full h-full object-cover"
                 />
               </div>
-              <span
-                className="text-xl tracking-tight"
-                style={{ fontFamily: "var(--font-display)", fontWeight: 700 }}
-              >
-                Chunes
-              </span>
+              <span className="font-semibold">Chunes</span>
             </div>
 
             {/* Links */}
-            <div className="flex items-center gap-8">
-              <Link
-                href="#features"
-                className="text-sm uppercase tracking-[0.1em] hover:border-b-2 hover:border-[var(--color-foreground)] pb-1 transition-none font-medium"
-                style={{ fontFamily: "var(--font-mono)" }}
+            <div className="flex items-center gap-6 text-sm text-[var(--foreground-secondary)]">
+              <a
+                href="/block"
+                className="hover:text-[var(--accent-primary)] transition-colors"
               >
-                Features
-              </Link>
-              <Link
-                href="#roadmap"
-                className="text-sm uppercase tracking-[0.1em] hover:border-b-2 hover:border-[var(--color-foreground)] pb-1 transition-none font-medium"
-                style={{ fontFamily: "var(--font-mono)" }}
-              >
-                Roadmap
-              </Link>
-              <Link
-                href="/support"
-                className="text-sm uppercase tracking-[0.1em] hover:border-b-2 hover:border-[var(--color-foreground)] pb-1 transition-none font-medium"
-                style={{ fontFamily: "var(--font-mono)" }}
-              >
-                Support
-              </Link>
-              <Link
+                Development
+              </a>
+              <a
                 href="/privacy"
-                className="text-sm uppercase tracking-[0.1em] hover:border-b-2 hover:border-[var(--color-foreground)] pb-1 transition-none font-medium"
-                style={{ fontFamily: "var(--font-mono)" }}
+                className="hover:text-[var(--accent-primary)] transition-colors"
               >
                 Privacy
-              </Link>
+              </a>
+              <a
+                href="/support"
+                className="hover:text-[var(--accent-primary)] transition-colors"
+              >
+                Support
+              </a>
             </div>
 
             {/* Copyright */}
-            <p className="text-sm" style={{ fontFamily: "var(--font-mono)" }}>
+            <p className="text-sm text-[var(--foreground-tertiary)]">
               &copy; 2026 Chunes
             </p>
           </div>

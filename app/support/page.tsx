@@ -4,34 +4,28 @@ import {
   HelpCircle,
   ArrowLeft,
   Mail,
-  MessageCircle,
-  Book,
   Bug,
   Lightbulb,
+  Book,
   ExternalLink,
 } from "lucide-react";
-import { MonochromeBackground } from "@/components/backgrounds";
-import { Button } from "@/components/ui/Button";
-import { Card, CardContent } from "@/components/ui/Card";
-import { Badge } from "@/components/ui/Badge";
-import { ThemeToggle } from "@/components/ThemeToggle";
 
 export const metadata = {
   title: "Support - Chunes",
-  description:
-    "Get help with Chunes. FAQ, troubleshooting, and contact information.",
+  description: "Get help with Chunes. FAQ, troubleshooting, and contact information.",
 };
 
-const faqs = [
+const faqs: { question: string; answer: string; highlighted?: boolean }[] = [
+  {
+    question: "Why doesn't Chunes support Spotify?",
+    answer:
+      'We\'d love to support Spotify, but unfortunately their <a href="https://developer.spotify.com/blog/2025-04-15-updating-the-criteria-for-web-api-extended-access" target="_blank" rel="noopener noreferrer" class="text-[var(--accent-primary)] hover:underline">recent API policy changes</a> make it impossible for independent developers and startups. Spotify now requires a minimum of 250,000 monthly active users just to get extended API access - creating a catch-22 where you can\'t grow without access, but can\'t get access without already having grown. They also only accept applications from registered organizations, not individuals. Until Spotify changes these policies, Chunes is built exclusively for Apple Music.',
+    highlighted: true,
+  },
   {
     question: "How do I get started with Chunes?",
     answer:
       'After installing Chunes, you\'ll be prompted to grant Apple Music access. Once granted, tap "Import Library" to bring your music into Chunes. Then start tagging and organizing your songs!',
-  },
-  {
-    question: "Does Chunes work with Spotify or other services?",
-    answer:
-      "Chunes is built specifically for Apple Music and requires an Apple Music subscription to access your library. Support for other services is not currently planned.",
   },
   {
     question: "How does sync work?",
@@ -46,7 +40,7 @@ const faqs = [
   {
     question: "What are markers?",
     answer:
-      "Markers let you bookmark specific moments in songs. Great for jumping to your favorite verse, chorus, or drop. You can add unlimited markers to any song.",
+      "Markers let you bookmark specific moments in songs. Great for jumping to your favorite verse, chorus, or drop. You can add unlimited markers to any song and use buffer playback to practice or get hyped.",
   },
   {
     question: "How do tag suggestions work?",
@@ -56,7 +50,7 @@ const faqs = [
   {
     question: "Is my data private?",
     answer:
-      'Yes. Your music data stays on your device and in your personal iCloud account. We don\'t sell or share your data. See our <a href="/privacy" class="text-clay-accent hover:underline">Privacy Policy</a> for details.',
+      "Yes. Your music data stays on your device and in your personal iCloud account. We don't sell or share your data.",
   },
   {
     question: "What iOS version do I need?",
@@ -72,7 +66,7 @@ const contactOptions = [
     description: "Get help via email",
     action: "support@chunes.app",
     link: "mailto:support@chunes.app",
-    gradient: "from-purple-400 to-purple-600",
+    color: "purple" as const,
   },
   {
     icon: Bug,
@@ -80,7 +74,7 @@ const contactOptions = [
     description: "Found something broken?",
     action: "bugs@chunes.app",
     link: "mailto:bugs@chunes.app",
-    gradient: "from-pink-400 to-pink-600",
+    color: "pink" as const,
   },
   {
     icon: Lightbulb,
@@ -88,22 +82,23 @@ const contactOptions = [
     description: "Share your ideas",
     action: "ideas@chunes.app",
     link: "mailto:ideas@chunes.app",
-    gradient: "from-blue-400 to-blue-600",
+    color: "orange" as const,
   },
 ];
 
 export default function SupportPage() {
   return (
-    <div className="min-h-screen">
-      <MonochromeBackground />
+    <div className="min-h-screen bg-gradient-app relative">
+      {/* Background gradient overlay */}
+      <div className="fixed inset-0 bg-gradient-hero pointer-events-none" />
 
       {/* Navigation */}
-      <nav className="sticky top-0 z-50 bg-[var(--color-background)] border-b-2 border-[var(--color-border)]">
-        <div className="max-w-6xl mx-auto px-6 md:px-8 lg:px-12">
-          <div className="flex items-center justify-between h-20">
+      <nav className="sticky top-0 z-50 glass border-b border-[var(--border-default)]">
+        <div className="container-app">
+          <div className="flex items-center justify-between h-16">
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-3 group">
-              <div className="w-10 h-10 border-2 border-[var(--color-border)] overflow-hidden">
+            <Link href="/" className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl overflow-hidden">
                 <Image
                   src="/chunes-icon.png"
                   alt="Chunes"
@@ -112,81 +107,58 @@ export default function SupportPage() {
                   className="w-full h-full object-cover"
                 />
               </div>
-              <span
-                className="text-2xl tracking-tight"
-                style={{ fontFamily: "var(--font-display)", fontWeight: 700 }}
-              >
-                Chunes
-              </span>
+              <span className="text-xl font-bold">Chunes</span>
             </Link>
 
-            {/* Right Actions */}
-            <div className="flex items-center gap-4">
-              <ThemeToggle />
-              <Link href="/">
-                <Button variant="outline" size="sm">
-                  <ArrowLeft className="w-4 h-4" strokeWidth={1.5} />
-                  Back to Home
-                </Button>
-              </Link>
-            </div>
+            {/* Back Button */}
+            <Link href="/" className="btn btn-outline btn-sm">
+              <ArrowLeft className="w-4 h-4" />
+              <span>Back to Home</span>
+            </Link>
           </div>
         </div>
       </nav>
 
       {/* Header */}
-      <section className="relative py-16 sm:py-24">
-        <div className="container mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+      <section className="relative py-16 md:py-24">
+        <div className="container-app">
           <div className="text-center mb-12">
-            <Badge variant="accent" size="lg" className="mb-6">
+            <div className="inline-flex items-center pill pill-primary mb-6">
               <HelpCircle className="w-4 h-4 mr-2" />
               Support
-            </Badge>
-            <h1
-              className="font-black text-4xl sm:text-5xl md:text-6xl text-clay-foreground tracking-tight mb-6"
-              style={{ fontFamily: "var(--font-heading)" }}
-            >
-              How Can We Help?
+            </div>
+            <h1 className="mb-4">
+              How Can We <span className="gradient-text">Help?</span>
             </h1>
-            <p className="text-lg sm:text-xl font-medium text-clay-muted leading-relaxed max-w-2xl mx-auto">
-              Find answers to common questions or get in touch with our support
-              team.
+            <p className="text-xl text-[var(--foreground-secondary)] max-w-2xl mx-auto">
+              Find answers to common questions or get in touch with our support team.
             </p>
           </div>
         </div>
       </section>
 
       {/* Contact Options */}
-      <section className="pb-12 sm:pb-16">
-        <div className="container mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+      <section className="pb-12 md:pb-16">
+        <div className="container-app">
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {contactOptions.map((option) => (
               <a
                 key={option.title}
                 href={option.link}
-                className="block group"
+                className="block"
               >
-                <Card variant="glass" hoverable>
-                  <CardContent className="p-6 sm:p-8 text-center">
-                    <div
-                      className={`w-14 h-14 mx-auto rounded-2xl bg-gradient-to-br ${option.gradient} shadow-clayButton flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}
-                    >
-                      <option.icon className="w-7 h-7 text-white" />
-                    </div>
-                    <h3
-                      className="font-extrabold text-xl text-clay-foreground mb-2"
-                      style={{ fontFamily: "var(--font-heading)" }}
-                    >
-                      {option.title}
-                    </h3>
-                    <p className="font-medium text-sm text-clay-muted mb-3">
-                      {option.description}
-                    </p>
-                    <p className="font-bold text-sm text-clay-accent group-hover:underline">
-                      {option.action}
-                    </p>
-                  </CardContent>
-                </Card>
+                <div className="card-interactive p-6 md:p-8 text-center h-full">
+                  <div className={`feature-icon feature-icon-${option.color} mx-auto mb-4`}>
+                    <option.icon className="w-6 h-6" />
+                  </div>
+                  <h3 className="text-xl font-bold mb-2">{option.title}</h3>
+                  <p className="text-sm text-[var(--foreground-secondary)] mb-3">
+                    {option.description}
+                  </p>
+                  <p className="text-sm font-semibold text-[var(--accent-primary)]">
+                    {option.action}
+                  </p>
+                </div>
               </a>
             ))}
           </div>
@@ -194,115 +166,96 @@ export default function SupportPage() {
       </section>
 
       {/* FAQ Section */}
-      <section className="pb-16 sm:pb-24">
-        <div className="container mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-10 sm:mb-12">
-            <h2
-              className="font-black text-3xl sm:text-4xl md:text-5xl text-clay-foreground tracking-tight mb-4"
-              style={{ fontFamily: "var(--font-heading)" }}
-            >
-              Frequently Asked Questions
+      <section className="pb-16 md:pb-24">
+        <div className="container-app max-w-4xl">
+          <div className="text-center mb-10 md:mb-12">
+            <h2>
+              Frequently Asked <span className="gradient-text">Questions</span>
             </h2>
           </div>
 
           <div className="space-y-4">
             {faqs.map((faq, index) => (
-              <Card key={index} variant="glass">
-                <CardContent className="p-6 sm:p-8">
-                  <h3
-                    className="font-extrabold text-lg text-clay-foreground mb-3"
-                    style={{ fontFamily: "var(--font-heading)" }}
-                  >
-                    {faq.question}
-                  </h3>
-                  <p
-                    className="font-medium text-base text-clay-muted leading-relaxed"
-                    dangerouslySetInnerHTML={{ __html: faq.answer }}
-                  />
-                </CardContent>
-              </Card>
+              <div
+                key={index}
+                className={`card p-6 md:p-8 ${
+                  faq.highlighted
+                    ? "ring-2 ring-[var(--accent-secondary)] bg-[var(--accent-secondary)]/5"
+                    : ""
+                }`}
+              >
+                {faq.highlighted && (
+                  <span className="tag-pill tag-mood text-xs mb-3 inline-block">Important</span>
+                )}
+                <h3 className={`font-bold mb-3 ${faq.highlighted ? "text-xl" : "text-lg"}`}>
+                  {faq.question}
+                </h3>
+                <p
+                  className="text-[var(--foreground-secondary)] leading-relaxed"
+                  dangerouslySetInnerHTML={{ __html: faq.answer }}
+                />
+              </div>
             ))}
           </div>
         </div>
       </section>
 
       {/* Additional Resources */}
-      <section className="pb-16 sm:pb-24">
-        <div className="container mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-          <Card variant="solid" className="relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-pink-500/5 to-transparent" />
-            <CardContent className="relative z-10 py-12 sm:py-16 text-center">
-              <Book className="w-12 h-12 mx-auto mb-6 text-clay-accent" />
-              <h2
-                className="font-black text-2xl sm:text-3xl md:text-4xl text-clay-foreground tracking-tight mb-4"
-                style={{ fontFamily: "var(--font-heading)" }}
-              >
-                Still Need Help?
+      <section className="pb-16 md:pb-24">
+        <div className="container-app">
+          <div className="card p-8 md:p-12 text-center relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-hero opacity-50" />
+            <div className="relative z-10">
+              <Book className="w-12 h-12 mx-auto mb-6 text-[var(--accent-primary)]" />
+              <h2 className="mb-4">
+                Still Need <span className="gradient-text">Help?</span>
               </h2>
-              <p className="text-lg font-medium text-clay-muted mb-8 max-w-2xl mx-auto leading-relaxed">
-                Our support team is here for you. We typically respond within
-                24 hours.
+              <p className="text-lg text-[var(--foreground-secondary)] mb-8 max-w-2xl mx-auto leading-relaxed">
+                Our support team is here for you. We typically respond within 24 hours.
               </p>
-              <a href="mailto:support@chunes.app">
-                <Button variant="primary" size="lg">
-                  <Mail className="w-5 h-5" />
-                  Contact Support
-                  <ExternalLink className="w-5 h-5" />
-                </Button>
+              <a href="mailto:support@chunes.app" className="btn btn-primary btn-lg inline-flex items-center">
+                <Mail className="w-5 h-5 mr-2" />
+                <span>Contact Support</span>
+                <ExternalLink className="w-4 h-4 ml-2" />
               </a>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="py-10 sm:py-12">
-        <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="glass-strong rounded-[32px] px-6 sm:px-8 py-8 shadow-clayCard">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-2xl overflow-hidden shadow-clayButton">
-                  <Image
-                    src="/chunes-icon.png"
-                    alt="Chunes"
-                    width={40}
-                    height={40}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <span
-                  className="font-black text-xl text-clay-foreground"
-                  style={{ fontFamily: "var(--font-heading)" }}
-                >
-                  Chunes
-                </span>
+      <footer className="border-t border-[var(--border-default)] py-8 relative z-10">
+        <div className="container-app">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-lg overflow-hidden">
+                <Image
+                  src="/chunes-icon.png"
+                  alt="Chunes"
+                  width={32}
+                  height={32}
+                  className="w-full h-full object-cover"
+                />
               </div>
-
-              <div className="flex items-center gap-6">
-                <Link
-                  href="/"
-                  className="font-medium text-sm text-clay-muted hover:text-clay-accent transition-colors"
-                >
-                  Home
-                </Link>
-                <Link
-                  href="/support"
-                  className="font-medium text-sm text-clay-accent transition-colors"
-                >
-                  Support
-                </Link>
-                <Link
-                  href="/privacy"
-                  className="font-medium text-sm text-clay-muted hover:text-clay-accent transition-colors"
-                >
-                  Privacy
-                </Link>
-              </div>
-
-              <p className="font-medium text-sm text-clay-muted">
-                &copy; 2026 Chunes
-              </p>
+              <span className="font-semibold">Chunes</span>
             </div>
+
+            <div className="flex items-center gap-6 text-sm text-[var(--foreground-secondary)]">
+              <Link href="/" className="hover:text-[var(--accent-primary)] transition-colors">
+                Home
+              </Link>
+              <Link href="/block" className="hover:text-[var(--accent-primary)] transition-colors">
+                Development
+              </Link>
+              <span className="text-[var(--accent-primary)]">Support</span>
+              <Link href="/privacy" className="hover:text-[var(--accent-primary)] transition-colors">
+                Privacy
+              </Link>
+            </div>
+
+            <p className="text-sm text-[var(--foreground-tertiary)]">
+              &copy; 2026 Chunes
+            </p>
           </div>
         </div>
       </footer>
