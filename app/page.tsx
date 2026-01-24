@@ -265,7 +265,7 @@ export default function HomePage() {
 
             {/* CTA */}
             <a
-              href="https://testflight.apple.com/join/chunes"
+              href="https://testflight.apple.com/join/zbbMFNMs"
               className="btn btn-primary btn-sm"
             >
               <span>Join Beta</span>
@@ -306,7 +306,7 @@ export default function HomePage() {
               {/* CTAs */}
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                 <a
-                  href="https://testflight.apple.com/join/chunes"
+                  href="https://testflight.apple.com/join/zbbMFNMs"
                   className="btn btn-primary btn-lg inline-flex items-center"
                 >
                   <svg
@@ -513,7 +513,7 @@ export default function HomePage() {
                 organize your music.
               </p>
               <a
-                href="https://testflight.apple.com/join/chunes"
+                href="https://testflight.apple.com/join/zbbMFNMs"
                 className="btn btn-primary btn-lg inline-flex items-center"
               >
                 <svg
