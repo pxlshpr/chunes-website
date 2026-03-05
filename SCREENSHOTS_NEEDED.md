@@ -96,10 +96,26 @@ Videos provide a better experience than static screenshots. Use screen recording
 **Duration:** 5-15 seconds each
 **Settings:** Autoplay, muted, loop
 
+### Overview Video (Featured at top)
+
+**Main App Overview** (`main-dark.mp4`, `main-light.mp4`)
+- **Duration:** 10-15 seconds
+- **What to show:** A feature-rich montage showcasing Chunes' power:
+  1. Player with vinyl spinning and colorful tag pills visible
+  2. Quick transition to tag selection - show AI suggestions with sparkle icon
+  3. Open filters panel - select multiple filters across categories
+  4. Jump to markers view - tap a marker, show buffer playback UI (5/10/15 sec options)
+  5. Return to player - smooth, effortless music organization
+- **Vibe:** Polished, feature-rich, shows the depth of control
+- **Key:** Demonstrate that this is for power users who want complete control over their library
+
+---
+
 ### Videos to create:
 
 | Video | Files | What to show |
 |-------|-------|--------------|
+| **Main App Overview** | `main-dark.mp4`, `main-light.mp4` | Feature montage: vinyl spinning with tags → quick tag selection/AI suggestions → open filters & create mix → tap marker with buffer playback → seamless workflow |
 | Tags Demo | `tags-dark.mp4`, `tags-light.mp4` | Scrolling through tag categories, tapping to add tags, AI suggesting tags |
 | Mixes Demo | `mixes-dark.mp4`, `mixes-light.mp4` | Opening filters, selecting multiple filters, changing sort order, saving as mix |
 | Markers Demo | `markers-dark.mp4`, `markers-light.mp4` | Opening markers sheet, tapping a marker to jump, using buffer playback |
@@ -123,8 +139,17 @@ ffmpeg -i input.mov -c:v libx264 -preset slow -crf 22 -c:a aac -b:a 128k output.
 
 ## Still Needed
 
+### Priority (Overview Video - Featured)
+- [ ] main-dark.mp4 / main-light.mp4 (Main app overview montage)
+
+### Screenshots
 - [ ] All light mode versions
 - [ ] mixes-dark.png / mixes-light.png
 - [ ] markers-dark.png / markers-light.png
 - [ ] library-dark.png / library-light.png
-- [ ] Videos (optional but recommended)
+
+### Feature Videos (optional but recommended)
+- [ ] tags-dark.mp4 / tags-light.mp4
+- [ ] mixes-dark.mp4 / mixes-light.mp4
+- [ ] markers-dark.mp4 / markers-light.mp4
+- [ ] player-dark.mp4 / player-light.mp4
